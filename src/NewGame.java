@@ -6,66 +6,66 @@ import java.awt.geom.Line2D;
 
 public class NewGame extends JComponent implements ActionListener, Runnable
 {
-    private ImageIcon[] images = new ImageIcon[8];
-    private int widthOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
-    private int heightOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
-    private JFrame mainGameWindow = new JFrame("NewGame");//Makes window with title "NewGame"
-    private Timer paintTicker = new Timer(20, this);
-    private Timer animationTicker = new Timer(50, this);
-    private ImageIcon nextImage = new ImageIcon();
-    private int pictureCounter;
-    private int uglyGuyXPos = widthOfScreen;
-    private Line2D.Double sideWalk = new Line2D.Double(widthOfScreen, heightOfScreen * 0.8, 0, heightOfScreen * 0.8);
-    private Line2D.Double sideWalk2 = new Line2D.Double(widthOfScreen, heightOfScreen * 0.9, 0, heightOfScreen * 0.9);
-    private Image roadImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("ground.png"));
-    
-    public static void main(String[] args)
-    {
-        SwingUtilities.invokeLater(new NewGame());
-    }
+	private ImageIcon[] images = new ImageIcon[8];
+	private int widthOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
+	private int heightOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
+	private JFrame mainGameWindow = new JFrame("NewGame");// Makes window with
+															// title "NewGame"
+	private Timer paintTicker = new Timer(20, this);
+	private Timer animationTicker = new Timer(30, this);
+	private ImageIcon nextImage = new ImageIcon();
+	private int pictureCounter;
+	private int thomasXPos = widthOfScreen;
+	private Image roadImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("ground.png"));
+	private int roadXPos = 0;
 
-    public void run()
-    {
-    	paintTicker.start();
-    	animationTicker.start();
-        images[0] = new ImageIcon("src/pic0.PNG");
-        images[1] = new ImageIcon("src/pic1.PNG");
-        images[2] = new ImageIcon("src/pic2.PNG");
-        images[3] = new ImageIcon("src/pic3.PNG");
-        images[4] = new ImageIcon("src/pic4.PNG");
-        images[5] = new ImageIcon("src/pic5.PNG");
-        images[6] = new ImageIcon("src/pic6.PNG");
-        images[7] = new ImageIcon("src/pic7.PNG");
-        mainGameWindow.setTitle("Animation Study");
-        mainGameWindow.setSize(widthOfScreen, heightOfScreen);
-        mainGameWindow.add(this);//Adds the paint method to the JFrame
-        mainGameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainGameWindow.setVisible(true);
-    }
+	public static void main(String[] args)
+	{
+		SwingUtilities.invokeLater(new NewGame());
+	}
 
-    public void paint(Graphics g)
-    {
-        Graphics2D g2 = (Graphics2D)g;
-        
-        g2.draw(sideWalk);
-        g2.draw(sideWalk2);
-        g2.drawImage(roadImage, 0, (int)(heightOfScreen*0.8), this);
-        nextImage.paintIcon(this, g2, uglyGuyXPos, (int)(heightOfScreen * 0.6));
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-    	if (e.getSource() == paintTicker)
+	public void run()
+	{
+		paintTicker.start();
+		animationTicker.start();
+		images[0] = new ImageIcon("src/Thomas 1");
+		images[1] = new ImageIcon("src/Thomas 2");
+		images[2] = new ImageIcon("src/Thomas 3");
+		images[3] = new ImageIcon("src/Thomas 4");
+		images[4] = new ImageIcon("src/Thomas 5");
+		images[5] = new ImageIcon("src/Thomas 6");
+		images[6] = new ImageIcon("src/Thomas 7");
+		images[7] = new ImageIcon("src/Thomas 8");
+		mainGameWindow.setTitle("Animation Study");
+		mainGameWindow.setSize(widthOfScreen, heightOfScreen);
+		mainGameWindow.add(this);// Adds the paint method to the JFrame
+		mainGameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mainGameWindow.setBackground(Color.blue);
+		mainGameWindow.setVisible(true);
+	}
+
+	public void paint(Graphics g)
+	{
+		Graphics2D g2 = (Graphics2D) g;
+		g2.scale(7, 1);
+//		g2.drawImage(roadImage, 0, (int) (heightOfScreen * 0.8), this);
+//		g2.scale((double)(1/g2.getTransform().getScaleX())*(.9), 1*(.9));
+		nextImage.paintIcon(this, g2, thomasXPos, (int) (heightOfScreen * 0.69));
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		if (e.getSource() == paintTicker)
 		{
-    		repaint();	
-		}
-    	if (e.getSource() == animationTicker)
-		{
-    		pictureCounter = (pictureCounter + 1) % 8;
-    		nextImage = images[pictureCounter];
-    		uglyGuyXPos = uglyGuyXPos - 17;
 			repaint();
 		}
-    }
+		if (e.getSource() == animationTicker)
+		{
+			pictureCounter = (pictureCounter + 1) % 8;
+			nextImage = images[pictureCounter];
+			thomasXPos = thomasXPos - 2;
+			repaint();
+		}
+	}
 }
