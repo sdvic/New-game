@@ -12,7 +12,7 @@ public class NewGame extends JComponent implements ActionListener, Runnable
 	private JFrame mainGameWindow = new JFrame("NewGame");// Makes window with
 															// title "NewGame"
 	private Timer paintTicker = new Timer(20, this);
-	private Timer animationTicker = new Timer(30, this);
+	private Timer animationTicker = new Timer(55, this);
 	private ImageIcon nextImage = new ImageIcon();
 	private int pictureCounter;
 	private int thomasXPos = widthOfScreen;
@@ -38,9 +38,10 @@ public class NewGame extends JComponent implements ActionListener, Runnable
 		images[7] = new ImageIcon("src/Thomas 8");
 		mainGameWindow.setTitle("Animation Study");
 		mainGameWindow.setSize(widthOfScreen, heightOfScreen);
+		ImageIcon minigun = new ImageIcon("Minigun_SU.png");
 		mainGameWindow.add(this);// Adds the paint method to the JFrame
 		mainGameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mainGameWindow.setBackground(Color.blue);
+		mainGameWindow.getContentPane().setBackground(new Color(200,235,255));
 		mainGameWindow.setVisible(true);
 	}
 
@@ -48,8 +49,8 @@ public class NewGame extends JComponent implements ActionListener, Runnable
 	{
 		Graphics2D g2 = (Graphics2D) g;
 		g2.scale(7, 1);
-//		g2.drawImage(roadImage, 0, (int) (heightOfScreen * 0.8), this);
-//		g2.scale((double)(1/g2.getTransform().getScaleX())*(.9), 1*(.9));
+		g2.drawImage(roadImage, 0, (int) (heightOfScreen * 0.8), this);
+		g2.scale((double)(1/g2.getTransform().getScaleX())*(.9), 1*(.9));
 		nextImage.paintIcon(this, g2, thomasXPos, (int) (heightOfScreen * 0.69));
 	}
 
@@ -64,7 +65,7 @@ public class NewGame extends JComponent implements ActionListener, Runnable
 		{
 			pictureCounter = (pictureCounter + 1) % 8;
 			nextImage = images[pictureCounter];
-			thomasXPos = thomasXPos - 2;
+			thomasXPos = thomasXPos - 18;
 			repaint();
 		}
 	}
