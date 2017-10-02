@@ -3,16 +3,30 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JFrame;
+
 public class ThomasUtilites implements KeyListener, ActionListener
 {
-	private boolean moveFaster;
-	private boolean turnLeft;
-	private boolean turnRight;
+	private boolean jump;
+	private boolean moveLeft;
+	private boolean moveRight;
 	private boolean slowDown;
 	private boolean shoot;
+	private JFrame jf;
 
+	
+	public ThomasUtilites()
+	{
+		// TODO Auto-generated constructor stub
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e)
+	{
+//	System.out.println("tic");	
+	}
+	
+	public void name()
 	{
 		
 	}
@@ -26,15 +40,13 @@ public class ThomasUtilites implements KeyListener, ActionListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		System.out.println("dfsd");
 		if (e.getKeyCode() == KeyEvent.VK_LEFT)
 		{
-			this.turnLeft = true;
-			System.out.println("left");
+			this.moveLeft = true;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_UP)
 		{
-			moveFaster = true;
+			jump = true;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_DOWN)
 		{
@@ -42,7 +54,7 @@ public class ThomasUtilites implements KeyListener, ActionListener
 		}
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT)
 		{
-			turnRight = true;
+			moveRight = true;
 		}
 		
 	}
@@ -52,11 +64,11 @@ public class ThomasUtilites implements KeyListener, ActionListener
 	{
 		if (e.getKeyCode() == KeyEvent.VK_LEFT)
 		{
-			turnLeft = false;
+			moveLeft = false;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_UP)
 		{
-			moveFaster = false;
+			jump = false;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_DOWN)
 		{
@@ -64,7 +76,7 @@ public class ThomasUtilites implements KeyListener, ActionListener
 		}
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT)
 		{
-			turnRight = false;
+			moveRight = false;
 		}
 		
 	}

@@ -18,8 +18,9 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private Timer movementTimer = new Timer(20, util);
 	private ImageIcon nextImage = new ImageIcon();
 	private int pictureCounter;
-	private int thomasXPos = widthOfScreen;
+	private int thomasXPos = widthOfScreen/2;
 	private Image roadImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("ground.png"));
+	private Image tracksImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("Standard Gauge Train Track Sprite.png"));
 	private int roadXPos = 0;
 	
 
@@ -31,6 +32,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	{
 		paintTicker.start();
 		animationTicker.start();
+		movementTimer.start();
 		images[0] = new ImageIcon("src/Thomas1.png");
 		images[1] = new ImageIcon("src/Thomas2.png");
 		images[2] = new ImageIcon("src/Thomas3.png");
@@ -46,16 +48,29 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		mainGameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainGameWindow.getContentPane().setBackground(new Color(200,235,255));
 		mainGameWindow.setVisible(true);
+		mainGameWindow.addKeyListener(util);
 	}
-
+	
 	public void paint(Graphics g)
 	{
 		Graphics2D g2 = (Graphics2D) g;
-		g2.scale(7, 1);
-		g2.drawImage(roadImage, 0, (int) (heightOfScreen * 0.8), this);
 		g2.scale((double)(1/g2.getTransform().getScaleX())*(.9), 1*(.9));
 		g2.drawImage(gun, thomasXPos+150, (int) (heightOfScreen * 0.70), -gun.getWidth(this)/2, gun.getHeight(this)/2, null);
 		nextImage.paintIcon(this, g2, thomasXPos, (int) (heightOfScreen * 0.69));
+		g2.scale(2, 2);
+		g2.drawImage(tracksImage, roadXPos, (int) (heightOfScreen * 0.449), this);
+		g2.drawImage(tracksImage, roadXPos + tracksImage.getWidth(mainGameWindow), (int) (heightOfScreen * 0.449), this);
+		g2.drawImage(tracksImage, roadXPos + tracksImage.getWidth(mainGameWindow)*2, (int) (heightOfScreen * 0.449), this);
+		g2.drawImage(tracksImage, roadXPos - tracksImage.getWidth(mainGameWindow), (int) (heightOfScreen * 0.449), this);
+		g2.drawImage(tracksImage, roadXPos - tracksImage.getWidth(mainGameWindow)*2, (int) (heightOfScreen * 0.449), this);
+		if (roadXPos > mainGameWindow.getWidth()/2)
+		{
+			roadXPos = -mainGameWindow.getWidth()/7;
+		}
+		System.out.println(roadXPos);
+		System.out.println("bounds = " + mainGameWindow.getWidth());
+		g2.drawImage(roadImage, roadXPos, (int) (heightOfScreen * 0.8), this);
+		
 			}
 
 	@Override
@@ -69,7 +84,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		{
 			pictureCounter = (pictureCounter + 1) % 8;
 			nextImage = images[pictureCounter];
-			thomasXPos = thomasXPos - 18;
+			roadXPos = roadXPos + 10;
 			repaint();
 		}
 	}
