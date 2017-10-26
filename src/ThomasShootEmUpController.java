@@ -1,8 +1,11 @@
 import javax.swing.*;
+
+import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Line2D;
+import java.net.URL;
 
 public class ThomasShootEmUpController extends JComponent implements ActionListener, Runnable
 {
@@ -22,6 +25,9 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private Image roadImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("ground.png"));
 	private Image tracksImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("Standard Gauge Train Track Sprite.png"));
 	private int roadXPos = 0;
+	URL thomasThemeAddress = getClass().getResource("Thomas The Tank Engine Theme Song.wav");
+	AudioClip thomasThemeSong = JApplet.newAudioClip(thomasThemeAddress);
+	
 	//TODO: CREATE A FORMULA THAT SPEEDS UP AND SLOWS DOWN THOMAS AS THE ARROW KEYS MOVE HIM
 
 	public static void main(String[] args)
@@ -49,6 +55,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		mainGameWindow.getContentPane().setBackground(new Color(200,235,255));
 		mainGameWindow.setVisible(true);
 		mainGameWindow.addKeyListener(util);
+		thomasThemeSong.play();
 	}
 	
 	public void paint(Graphics g)
