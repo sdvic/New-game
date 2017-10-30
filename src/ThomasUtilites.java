@@ -17,7 +17,6 @@ public class ThomasUtilites implements KeyListener, ActionListener
 	private boolean slowDown;
 	private boolean shoot;
 	private JFrame jf;
-	public Clip music;
 	private int thomasSpeed;
 	private Timer accelerationRegulator;
 	
@@ -39,23 +38,6 @@ public class ThomasUtilites implements KeyListener, ActionListener
 		
 	}
 
-	public void playMusic()
-	{
-		try
-		{
-			AudioInputStream audioInputStream = AudioSystem
-					.getAudioInputStream(getClass().getResource(
-							"Thomas The Tank Engine Theme Song.wav"));
-			music = AudioSystem.getClip();
-			music.open(audioInputStream);
-			music.loop(Clip.LOOP_CONTINUOUSLY);
-		} catch (Exception ex)
-		{
-			System.out.println("Error with playing sound.");
-			ex.printStackTrace();
-		}
-	}
-	
 	@Override
 	public void keyTyped(KeyEvent e)
 	{

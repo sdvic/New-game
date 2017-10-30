@@ -56,6 +56,10 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		mainGameWindow.setVisible(true);
 		mainGameWindow.addKeyListener(util);
 		thomasThemeSong.play();
+//		AudioInputStream audioIn = AudioSystem.getAudioInputStream(MyClazz.class.getResource("music.wav"));
+//		Clip clip = AudioSystem.getClip();
+//		clip.open(audioIn);
+//		clip.start();
 	}
 	
 	public void paint(Graphics g)
