@@ -11,10 +11,10 @@ import javax.swing.Timer;
 
 public class ThomasUtilites implements KeyListener, ActionListener
 {
-	private boolean jump;
-	private boolean moveLeft;
-	private boolean moveRight;
-	private boolean slowDown;
+	public boolean jump;
+	public boolean moveLeft;
+	public boolean moveRight;
+	public boolean slowDown;
 	private boolean shoot;
 	private JFrame jf;
 	private int thomasSpeed;
