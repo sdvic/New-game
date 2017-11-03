@@ -4,6 +4,7 @@ import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.net.URL;
 
@@ -18,7 +19,8 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	public ThomasUtilites util = new ThomasUtilites();
 	private Timer paintTicker = new Timer(20, this);
 	private Timer animationTicker = new Timer(45, this);
-	private ImageIcon thomasImage = new ImageIcon();
+	private ImageIcon thomasImageIcon = new ImageIcon();
+	private Image thomasImage;
 	private int pictureCounter;
 	private int thomasXPos = widthOfScreen / 2;
 	private Image roadImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("ground.png"));
@@ -57,21 +59,27 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	public void paint(Graphics g)
 	{
 		Graphics2D g2 = (Graphics2D) g;
-		g2.scale((double) (1 / g2.getTransform().getScaleX()) * (.9), 1 * (.9));
-		g2.drawImage(gun, thomasXPos + 150, (int) (heightOfScreen * 0.70), -gun.getWidth(this) / 2, gun.getHeight(this) / 2, null);
-		thomasImage.paintIcon(this, g2, thomasXPos, (int) (heightOfScreen * 0.69));
-		g2.scale(2, 2);
-		g2.drawImage(tracksImage, roadXPos, (int) (heightOfScreen * 0.449), this);
-		g2.scale(-1, 1);
-		g2.drawImage(tracksImage, roadXPos + tracksImage.getWidth(mainGameWindow), (int) (heightOfScreen * 0.449), this);
-		g2.drawImage(tracksImage, roadXPos + tracksImage.getWidth(mainGameWindow) * 2, (int) (heightOfScreen * 0.449), this);
-		g2.drawImage(tracksImage, roadXPos - tracksImage.getWidth(mainGameWindow), (int) (heightOfScreen * 0.449), this);
-		g2.drawImage(tracksImage, roadXPos - tracksImage.getWidth(mainGameWindow) * 2, (int) (heightOfScreen * 0.449), this);
-		if (roadXPos > mainGameWindow.getWidth() / 2)
-		{
-			roadXPos = -mainGameWindow.getWidth() / 7;
-		}
-		g2.drawImage(roadImage, roadXPos, (int) (heightOfScreen * 0.8), this);
+		thomasImageIcon.paintIcon(this, g2, thomasXPos, (int) (heightOfScreen * 0.2));
+//		g2.scale(-1, 1);
+//		g2.translate(-100, 55);
+//		System.out.println(g2.getTransform().getTranslateX());
+////		thomasImage.paintIcon(this, g2, 500, 0);
+//		
+//		g2.scale((double) (1 / g2.getTransform().getScaleX()) * (.9), 1 * (.9));
+//		g2.drawImage(gun, thomasXPos + 150, (int) (heightOfScreen * 0.70), -gun.getWidth(this) / 2, gun.getHeight(this) / 2, null);
+//		thomasImageIcon.paintIcon(this, g2, thomasXPos, (int) (heightOfScreen * 0.69));
+//		g2.scale(2, 2);
+//		g2.drawImage(tracksImage, roadXPos, (int) (heightOfScreen * 0.449), this);
+//		g2.drawImage(tracksImage, roadXPos + tracksImage.getWidth(mainGameWindow), (int) (heightOfScreen * 0.449), this);
+//		g2.drawImage(tracksImage, roadXPos + tracksImage.getWidth(mainGameWindow) * 2, (int) (heightOfScreen * 0.449), this);
+//		g2.drawImage(tracksImage, roadXPos - tracksImage.getWidth(mainGameWindow), (int) (heightOfScreen * 0.449), this);
+//		g2.drawImage(tracksImage, roadXPos - tracksImage.getWidth(mainGameWindow) * 2, (int) (heightOfScreen * 0.449), this);
+//		if (roadXPos > mainGameWindow.getWidth() / 2)
+//		{
+//			roadXPos = -mainGameWindow.getWidth() / 7;
+//		}
+//		g2.drawImage(roadImage, roadXPos, (int) (heightOfScreen * 0.8), this);
+//		g2.drawImage
 	}
 
 	@Override
@@ -86,7 +94,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			if (util.moveLeft)
 			{
 				pictureCounter = (pictureCounter + 1) % 8;
-				thomasImage = images[pictureCounter];
+				thomasImageIcon = images[pictureCounter];
 				roadXPos = roadXPos + 10;
 				repaint();
 			}
@@ -95,8 +103,10 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 				if(pictureCounter < 1){
 					pictureCounter = 7;
 				}
+				
 				pictureCounter = (pictureCounter - 1) % 8;
-				thomasImage = images[pictureCounter];
+				thomasImageIcon = images[pictureCounter];
+				AffineTransform.getScaleInstance(-1, 1);
 				roadXPos = roadXPos - 10;
 				repaint();
 			}
