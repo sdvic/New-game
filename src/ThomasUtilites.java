@@ -19,54 +19,50 @@ public class ThomasUtilites implements KeyListener, ActionListener
 	private JFrame jf;
 	private int thomasSpeed;
 	private Timer accelerationRegulator;
-	
+
 	public ThomasUtilites()
 	{
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		if (moveLeft == true){
-			
+		if (moveLeft == true)
+		{
+
 		}
 	}
-	
+
 	public void name()
 	{
-		
+
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e)
 	{
 	}
-	
+
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
 		if (e.getKeyCode() == KeyEvent.VK_LEFT)
 		{
 			this.moveLeft = true;
-			System.out.println("left");
 		}
 		if (e.getKeyCode() == KeyEvent.VK_UP)
 		{
 			jump = true;
-			System.out.println("jump");
 		}
 		if (e.getKeyCode() == KeyEvent.VK_DOWN)
 		{
 			slowDown = true;
-			System.out.println("down");
 		}
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT)
 		{
 			this.moveRight = true;
-			System.out.println("right");
 		}
-		
 	}
 
 	@Override
@@ -88,7 +84,7 @@ public class ThomasUtilites implements KeyListener, ActionListener
 		{
 			this.moveRight = false;
 		}
-		
+
 	}
 
 }

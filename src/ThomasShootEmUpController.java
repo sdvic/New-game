@@ -27,6 +27,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private Image tracksImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("Standard Gauge Train Track Sprite.png"));
 	private int roadXPos = 0;
 	private boolean isGoingRight;
+	private boolean isGoingLeft;
 	URL thomasThemeAddress = getClass().getResource("Thomas The Tank Engine Theme Song.wav");
 	AudioClip thomasThemeSong = JApplet.newAudioClip(thomasThemeAddress);
 
@@ -60,23 +61,26 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	public void paint(Graphics g)
 	{
 		Graphics2D g2 = (Graphics2D) g;
-//		thomasImageIcon.paintIcon(this, g2, thomasXPos, (int) (heightOfScreen * 0.2));
-		
-		//TODO:WORK ON MAKING THOMAS ACCELERATE BEFORE HE REACHES FULL SPEED
-//		g2.scale(-1, 1);
-		g2.translate(-100, 55);
-//		thomasImage.paintIcon(this, g2, 500, 0);
-		
-		g2.scale((double) (1 / g2.getTransform().getScaleX()) * (.9), 1 * (.9));
+		// TODO:WORK ON MAKING THOMAS ACCELERATE BEFORE HE REACHES FULL SPEED
+		g2.scale(-1, 1);
+		g2.scale((double) (1 / g2.getTransform().getScaleX())*0.9, 1*0.9);
 //		g2.drawImage(gun, thomasXPos + 150, (int) (heightOfScreen * 0.70), -gun.getWidth(this) / 2, gun.getHeight(this) / 2, null);
+		Image im = thomasImageIcon.getImage();
 		if (isGoingRight)
 		{
-			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
-//			pictureCounter = (pictureCounter - 1) % 8;
 			thomasImageIcon = images[pictureCounter];
+			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+			tx.translate(-thomasXPos-500, (int) (heightOfScreen * 0.69));
+			g2.drawImage(im, tx, null);
 		}
-		Image im = thomasImageIcon.getImage();
-		thomasImageIcon.paintIcon(this, g2, thomasXPos, (int) (heightOfScreen * 0.69));
+		if (isGoingLeft)
+		{
+			thomasImageIcon = images[pictureCounter];
+			AffineTransform tx = AffineTransform.getScaleInstance(1, 1);
+			tx.translate(im.getWidth(null), (int) (heightOfScreen * 0.69));
+			g2.drawImage(im, tx, null);
+		}
+
 		g2.scale(2, 2);
 		g2.drawImage(tracksImage, roadXPos, (int) (heightOfScreen * 0.449), this);
 		g2.drawImage(tracksImage, roadXPos + tracksImage.getWidth(mainGameWindow), (int) (heightOfScreen * 0.449), this);
@@ -101,6 +105,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		{
 			if (util.moveLeft)
 			{
+				isGoingLeft = true;
 				isGoingRight = false;
 				pictureCounter = (pictureCounter + 1) % 8;
 				thomasImageIcon = images[pictureCounter];
@@ -110,19 +115,21 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			if (util.moveRight)
 			{
 				isGoingRight = true;
-				if(pictureCounter < 1){
-					pictureCounter = 7;
-				}
-				
-//				AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
-				pictureCounter = (pictureCounter - 1);
+				isGoingLeft = false;
+				pictureCounter = (pictureCounter + 1) % 8;
 				thomasImageIcon = images[pictureCounter];
+
+				AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+				// pictureCounter = (pictureCounter - 1);
+				// thomasImageIcon = images[pictureCounter];
 				roadXPos = roadXPos - 10;
 				repaint();
 			}
 			if (util.moveLeft && util.moveRight)
 			{
 				isGoingRight = false;
+				isGoingLeft = false;
+//				thomasImageIcon.paintIcon(this, g2, thomasXPos, (int) (heightOfScreen * 0.69));
 			}
 		}
 	}
