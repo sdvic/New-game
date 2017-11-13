@@ -28,6 +28,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private int roadXPos = 0;
 	private boolean isGoingRight;
 	private boolean isGoingLeft;
+	private boolean isNotMoving;
 	URL thomasThemeAddress = getClass().getResource("Thomas The Tank Engine Theme Song.wav");
 	AudioClip thomasThemeSong = JApplet.newAudioClip(thomasThemeAddress);
 
@@ -48,7 +49,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		images[6] = new ImageIcon("src/Thomas7.png");
 		images[7] = new ImageIcon("src/Thomas8.png");
 		gun = Toolkit.getDefaultToolkit().createImage(getClass().getResource("Minigun_SU.png"));
-		mainGameWindow.setTitle("Animation Study");
+		mainGameWindow.setTitle("Thomas the tank");
 		mainGameWindow.setSize(widthOfScreen, heightOfScreen);
 		mainGameWindow.add(this);// Adds the paint method to the JFrame
 		mainGameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -70,18 +71,28 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		{
 			thomasImageIcon = images[pictureCounter];
 			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
-			tx.translate(-thomasXPos-500, (int) (heightOfScreen * 0.69));
+			tx.translate(-thomasXPos-(thomasXPos/4), (int) (heightOfScreen * 0.69));
 			g2.drawImage(im, tx, null);
 		}
 		if (isGoingLeft)
 		{
 			thomasImageIcon = images[pictureCounter];
 			AffineTransform tx = AffineTransform.getScaleInstance(1, 1);
-			tx.translate(im.getWidth(null), (int) (heightOfScreen * 0.69));
+			tx.translate(thomasXPos-(thomasXPos/7), (int) (heightOfScreen * 0.69));
 			g2.drawImage(im, tx, null);
 		}
-
+		if (isNotMoving)
+		{
+//			thomasImageIcon = images[pictureCounter];
+		}
 		g2.scale(2, 2);
+		g2.drawImage(roadImage, roadXPos, (int) (heightOfScreen * 0.449), this);
+		g2.drawImage(roadImage, roadXPos + roadImage.getWidth(mainGameWindow), (int) (heightOfScreen * 0.449), this);
+		g2.drawImage(roadImage, roadXPos + roadImage.getWidth(mainGameWindow) * 2, (int) (heightOfScreen * 0.449), this);
+		g2.drawImage(roadImage, roadXPos + roadImage.getWidth(mainGameWindow) * 3, (int) (heightOfScreen * 0.449), this);
+		g2.drawImage(roadImage, roadXPos - roadImage.getWidth(mainGameWindow), (int) (heightOfScreen * 0.449), this);
+		g2.drawImage(roadImage, roadXPos - roadImage.getWidth(mainGameWindow) * 2, (int) (heightOfScreen * 0.449), this);
+		g2.drawImage(roadImage, roadXPos - roadImage.getWidth(mainGameWindow) * 3, (int) (heightOfScreen * 0.449), this);
 		g2.drawImage(tracksImage, roadXPos, (int) (heightOfScreen * 0.449), this);
 		g2.drawImage(tracksImage, roadXPos + tracksImage.getWidth(mainGameWindow), (int) (heightOfScreen * 0.449), this);
 		g2.drawImage(tracksImage, roadXPos + tracksImage.getWidth(mainGameWindow) * 2, (int) (heightOfScreen * 0.449), this);
@@ -91,7 +102,11 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		{
 			roadXPos = -mainGameWindow.getWidth() / 7;
 		}
-		g2.drawImage(roadImage, roadXPos, (int) (heightOfScreen * 0.8), this);
+		if (roadXPos < -mainGameWindow.getWidth() / 7)
+		{
+			roadXPos = mainGameWindow.getWidth() / 2;
+		}
+		
 	}
 
 	@Override
@@ -107,7 +122,11 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			{
 				isGoingLeft = true;
 				isGoingRight = false;
-				pictureCounter = (pictureCounter + 1) % 8;
+				isNotMoving = false;
+				if(!isNotMoving)
+					{
+					pictureCounter = (pictureCounter + 1) % 8;
+					}
 				thomasImageIcon = images[pictureCounter];
 				roadXPos = roadXPos + 10;
 				repaint();
@@ -116,20 +135,27 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			{
 				isGoingRight = true;
 				isGoingLeft = false;
+				isNotMoving = false;
+				if(!isNotMoving)
+				{
 				pictureCounter = (pictureCounter + 1) % 8;
+				}
 				thomasImageIcon = images[pictureCounter];
 
 				AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
 				// pictureCounter = (pictureCounter - 1);
-				// thomasImageIcon = images[pictureCounter];
 				roadXPos = roadXPos - 10;
 				repaint();
+				System.out.println(pictureCounter);
 			}
 			if (util.moveLeft && util.moveRight)
 			{
 				isGoingRight = false;
 				isGoingLeft = false;
-//				thomasImageIcon.paintIcon(this, g2, thomasXPos, (int) (heightOfScreen * 0.69));
+				isNotMoving = true;
+//				thomasImageIcon = images[pictureCounter];
+				System.out.println(pictureCounter);
+//				repaint();
 			}
 		}
 	}
