@@ -57,6 +57,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		mainGameWindow.setVisible(true);
 		mainGameWindow.addKeyListener(util);
 		thomasThemeSong.play();
+		isGoingLeft = true;
 	}
 
 	public void paint(Graphics g)
@@ -80,10 +81,6 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			AffineTransform tx = AffineTransform.getScaleInstance(1, 1);
 			tx.translate(thomasXPos-(thomasXPos/7), (int) (heightOfScreen * 0.69));
 			g2.drawImage(im, tx, null);
-		}
-		if (isNotMoving)
-		{
-//			thomasImageIcon = images[pictureCounter];
 		}
 		g2.scale(2, 2);
 		g2.drawImage(roadImage, roadXPos, (int) (heightOfScreen * 0.449), this);
@@ -143,19 +140,14 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 				thomasImageIcon = images[pictureCounter];
 
 				AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
-				// pictureCounter = (pictureCounter - 1);
 				roadXPos = roadXPos - 10;
 				repaint();
 				System.out.println(pictureCounter);
 			}
 			if (util.moveLeft && util.moveRight)
 			{
-				isGoingRight = false;
-				isGoingLeft = false;
 				isNotMoving = true;
-//				thomasImageIcon = images[pictureCounter];
 				System.out.println(pictureCounter);
-//				repaint();
 			}
 		}
 	}

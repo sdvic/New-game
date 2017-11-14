@@ -28,15 +28,6 @@ public class ThomasUtilites implements KeyListener, ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		if (moveLeft == true)
-		{
-
-		}
-	}
-
-	public void name()
-	{
-
 	}
 
 	@Override
