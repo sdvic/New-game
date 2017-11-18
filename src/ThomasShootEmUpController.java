@@ -4,6 +4,7 @@ import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.net.URL;
@@ -64,6 +65,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		mainGameWindow.addKeyListener(util);
 		thomasThemeSong.play();
 		isGoingLeft = true;
+		
 	}
 
 	public void paint(Graphics g)
@@ -89,12 +91,14 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			tx.translate(thomasXPos - (thomasXPos / 6), thomasYPos);
 			g2.drawImage(im, tx, null);
 		}
-		if (isJumping)
+		
+		if (util.isJumping || thomasYPos < (int) (heightOfScreen * 0.69))
 		{
 			thomasImageIcon = images[pictureCounter];
 			thomasYPos += velocity;
 			velocity += acceleration;
 		}
+
 		g2.scale(2, 2);
 		g2.drawImage(roadImage, roadXPos, (int) (heightOfScreen * 0.449), this);
 		g2.drawImage(roadImage, roadXPos + roadImage.getWidth(mainGameWindow), (int) (heightOfScreen * 0.449), this);
@@ -117,15 +121,29 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		{
 			roadXPos = mainGameWindow.getWidth() / 2;
 		}
-
+		// TODO:
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
+		
 		if (e.getSource() == paintTicker)
 		{
 			repaint();
+			//TODO: COMBINE UTIL.JUMP AND ISJUMPING INTO ONE BOOLEAN TO SIMPLIFY THE PROGRAM, OR ELSE FIND A REASON WHY THAT ISN'T A GOOD IDEA
+			if (thomasYPos >= (int) (heightOfScreen * 0.69))
+			{
+				if (util.isJumping)
+				{
+					isJumping = true;
+				} 
+//				else
+				{
+//					util.isJumping = false;
+				}
+				// System.out.println(isJumping);
+			}
 		}
 		if (e.getSource() == animationTicker)
 		{
@@ -163,17 +181,6 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			}
 
 			if (thomasYPos >= (int) (heightOfScreen * 0.69))
-			{
-				if (util.jump)
-				{
-					isJumping = true;
-				}
-				else
-				{
-					isJumping = false;
-				}
-			}
-			if(thomasYPos >= (int) (heightOfScreen * 0.69))
 			{
 				velocity = initialVelocity;
 			}

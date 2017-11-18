@@ -11,7 +11,7 @@ import javax.swing.Timer;
 
 public class ThomasUtilites implements KeyListener, ActionListener
 {
-	public boolean jump;
+	public boolean isJumping;
 	public boolean moveLeft;
 	public boolean moveRight;
 	public boolean slowDown;
@@ -44,7 +44,7 @@ public class ThomasUtilites implements KeyListener, ActionListener
 		}
 		if (e.getKeyCode() == KeyEvent.VK_UP)
 		{
-			jump = true;
+			isJumping = true;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_DOWN)
 		{
@@ -65,7 +65,7 @@ public class ThomasUtilites implements KeyListener, ActionListener
 		}
 		if (e.getKeyCode() == KeyEvent.VK_UP)
 		{
-			this.jump = false;
+			this.isJumping = false;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_DOWN)
 		{
