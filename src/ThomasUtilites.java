@@ -16,13 +16,13 @@ public class ThomasUtilites implements KeyListener, ActionListener
 	public boolean moveRight;
 	public boolean slowDown;
 	private boolean shoot;
-	private JFrame jf;
+	public int velocity;
 	private int thomasSpeed;
 	private Timer accelerationRegulator;
 
-	public ThomasUtilites()
+	public ThomasUtilites(int velocity)
 	{
-		// TODO Auto-generated constructor stub
+		this.velocity = velocity;
 	}
 
 	@Override
@@ -66,6 +66,7 @@ public class ThomasUtilites implements KeyListener, ActionListener
 		if (e.getKeyCode() == KeyEvent.VK_UP)
 		{
 			this.isJumping = false;
+			velocity = 0;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_DOWN)
 		{

@@ -17,7 +17,6 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private int heightOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
 	private JFrame mainGameWindow = new JFrame("NewGame");// Makes window with
 															// title "NewGame"
-	public ThomasUtilites util = new ThomasUtilites();
 	private Timer paintTicker = new Timer(20, this);
 	private Timer animationTicker = new Timer(45, this);
 	private ImageIcon thomasImageIcon = new ImageIcon();
@@ -32,10 +31,13 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private boolean isGoingLeft;
 	private boolean isNotMoving;
 	private boolean isJumping;
+	private boolean isFalling;
 	private int position;
-	private int initialVelocity = -35;
-	private int velocity = initialVelocity;
-	private int acceleration = 1;
+	private int initialJumpingVelocity = -35;
+	public int jumpingVelocity = initialJumpingVelocity;
+	private int movingVelocity;
+	public ThomasUtilites util = new ThomasUtilites(jumpingVelocity);
+	private int gravityAcceleration = 1;
 	URL thomasThemeAddress = getClass().getResource("Thomas The Tank Engine Theme Song.wav");
 	AudioClip thomasThemeSong = JApplet.newAudioClip(thomasThemeAddress);
 
@@ -65,7 +67,6 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		mainGameWindow.addKeyListener(util);
 		thomasThemeSong.play();
 		isGoingLeft = true;
-		
 	}
 
 	public void paint(Graphics g)
@@ -91,12 +92,15 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			tx.translate(thomasXPos - (thomasXPos / 6), thomasYPos);
 			g2.drawImage(im, tx, null);
 		}
-		
+		if(!util.isJumping){
+			gravityAcceleration = 2;
+		}
 		if (util.isJumping || thomasYPos < (int) (heightOfScreen * 0.69))
 		{
 			thomasImageIcon = images[pictureCounter];
-			thomasYPos += velocity;
-			velocity += acceleration;
+			thomasYPos += jumpingVelocity;
+			jumpingVelocity += gravityAcceleration;
+			gravityAcceleration = 1;
 		}
 
 		g2.scale(2, 2);
@@ -120,6 +124,9 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		if (roadXPos < -mainGameWindow.getWidth() / 7)
 		{
 			roadXPos = mainGameWindow.getWidth() / 2;
+		}
+		if (thomasYPos > (int) (heightOfScreen * 0.69)){
+			thomasYPos = (int) (heightOfScreen * 0.69); //Added this to compensate for Thomas falling through the tracks
 		}
 		// TODO:
 	}
@@ -147,6 +154,13 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		}
 		if (e.getSource() == animationTicker)
 		{
+			roadXPos = roadXPos + movingVelocity;
+			if (movingVelocity > 12 || (movingVelocity > 0 && !(util.moveLeft || util.moveRight))){
+				movingVelocity -= 1;
+			}
+			if (movingVelocity < -12 || (movingVelocity < 0 && !(util.moveLeft || util.moveRight))){
+				movingVelocity ++;
+			}
 			if (util.moveLeft)
 			{
 				isGoingLeft = true;
@@ -157,7 +171,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 					pictureCounter = (pictureCounter + 1) % 8;
 				}
 				thomasImageIcon = images[pictureCounter];
-				roadXPos = roadXPos + 10;
+				movingVelocity = movingVelocity + 1;
 				repaint();
 			}
 			if (util.moveRight)
@@ -172,7 +186,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 				thomasImageIcon = images[pictureCounter];
 
 				AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
-				roadXPos = roadXPos - 10;
+				movingVelocity = movingVelocity - 1;
 				repaint();
 			}
 			if (util.moveLeft && util.moveRight)
@@ -182,7 +196,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 
 			if (thomasYPos >= (int) (heightOfScreen * 0.69))
 			{
-				velocity = initialVelocity;
+				jumpingVelocity = initialJumpingVelocity;
 			}
 		}
 	}
