@@ -27,13 +27,15 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private Image roadImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("ground.png"));
 	private Image tracksImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("Standard Gauge Train Track Sprite.png"));
 	private int roadXPos = 0;
+	private int groundLevelTrackYPos = (int) (heightOfScreen * 0.449);
+	private int level2TrackYPos = (int) (heightOfScreen * 0.2);
 	private boolean isGoingRight;
 	private boolean isGoingLeft;
 	private boolean isNotMoving;
 	private boolean isJumping;
 	private boolean isFalling;
 	private int position;
-	private int initialJumpingVelocity = -35;
+	private int initialJumpingVelocity = -37;
 	public int jumpingVelocity = initialJumpingVelocity;
 	private int movingVelocity;
 	public ThomasUtilites util = new ThomasUtilites(jumpingVelocity);
@@ -75,8 +77,8 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		// TODO:WORK ON MAKING THOMAS ACCELERATE BEFORE HE REACHES FULL SPEED
 		g2.scale(-1, 1);
 		g2.scale((double) (1 / g2.getTransform().getScaleX()) * 0.9, 1 * 0.9);
-		// g2.drawImage(gun, thomasXPos + 150, (int) (heightOfScreen * 0.70),
-		// -gun.getWidth(this) / 2, gun.getHeight(this) / 2, null);
+		 g2.drawImage(gun, thomasXPos + 150, (int) (heightOfScreen * 0.70),
+		 -gun.getWidth(this) / 2, gun.getHeight(this) / 2, null);
 		Image im = thomasImageIcon.getImage();
 		if (isGoingRight)
 		{
@@ -92,8 +94,8 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			tx.translate(thomasXPos - (thomasXPos / 6), thomasYPos);
 			g2.drawImage(im, tx, null);
 		}
-		if(!util.isJumping){
-			gravityAcceleration = 2;
+		if(!util.isJumping && jumpingVelocity < 0){
+			gravityAcceleration = 3;
 		}
 		if (util.isJumping || thomasYPos < (int) (heightOfScreen * 0.69))
 		{
@@ -102,33 +104,29 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			jumpingVelocity += gravityAcceleration;
 			gravityAcceleration = 1;
 		}
-
+		int trackWidth = tracksImage.getWidth(mainGameWindow);
+		int roadWidth =  roadImage.getWidth(mainGameWindow);
 		g2.scale(2, 2);
-		g2.drawImage(roadImage, roadXPos, (int) (heightOfScreen * 0.449), this);
-		g2.drawImage(roadImage, roadXPos + roadImage.getWidth(mainGameWindow), (int) (heightOfScreen * 0.449), this);
-		g2.drawImage(roadImage, roadXPos + roadImage.getWidth(mainGameWindow) * 2, (int) (heightOfScreen * 0.449), this);
-		g2.drawImage(roadImage, roadXPos + roadImage.getWidth(mainGameWindow) * 3, (int) (heightOfScreen * 0.449), this);
-		g2.drawImage(roadImage, roadXPos - roadImage.getWidth(mainGameWindow), (int) (heightOfScreen * 0.449), this);
-		g2.drawImage(roadImage, roadXPos - roadImage.getWidth(mainGameWindow) * 2, (int) (heightOfScreen * 0.449), this);
-		g2.drawImage(roadImage, roadXPos - roadImage.getWidth(mainGameWindow) * 3, (int) (heightOfScreen * 0.449), this);
-		g2.drawImage(tracksImage, roadXPos, (int) (heightOfScreen * 0.449), this);
-		g2.drawImage(tracksImage, roadXPos + tracksImage.getWidth(mainGameWindow), (int) (heightOfScreen * 0.449), this);
-		g2.drawImage(tracksImage, roadXPos + tracksImage.getWidth(mainGameWindow) * 2, (int) (heightOfScreen * 0.449), this);
-		g2.drawImage(tracksImage, roadXPos - tracksImage.getWidth(mainGameWindow), (int) (heightOfScreen * 0.449), this);
-		g2.drawImage(tracksImage, roadXPos - tracksImage.getWidth(mainGameWindow) * 2, (int) (heightOfScreen * 0.449), this);
-		g2.drawImage(tracksImage, roadXPos, (int) (heightOfScreen * 0.2), this);
-		if (roadXPos > mainGameWindow.getWidth() / 2)
+		for (int i = -5; i < 5; i++)
 		{
-			roadXPos = -mainGameWindow.getWidth() / 7;
+			g2.drawImage(roadImage, roadXPos + roadWidth * i, groundLevelTrackYPos, this);
 		}
-		if (roadXPos < -mainGameWindow.getWidth() / 7)
+		for (int i = -4; i < 4; i++)
 		{
-			roadXPos = mainGameWindow.getWidth() / 2;
+			g2.drawImage(tracksImage, roadXPos + trackWidth * i, groundLevelTrackYPos, this);
+		}
+		g2.drawImage(tracksImage, roadXPos, level2TrackYPos, this);
+		if (roadXPos > mainGameWindow.getWidth())
+		{
+			roadXPos = -mainGameWindow.getWidth() / 4;
+		}
+		if (roadXPos < -mainGameWindow.getWidth() / 4)
+		{
+			roadXPos = mainGameWindow.getWidth();
 		}
 		if (thomasYPos > (int) (heightOfScreen * 0.69)){
 			thomasYPos = (int) (heightOfScreen * 0.69); //Added this to compensate for Thomas falling through the tracks
 		}
-		// TODO:
 	}
 
 	@Override
@@ -138,27 +136,21 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		if (e.getSource() == paintTicker)
 		{
 			repaint();
-			//TODO: COMBINE UTIL.JUMP AND ISJUMPING INTO ONE BOOLEAN TO SIMPLIFY THE PROGRAM, OR ELSE FIND A REASON WHY THAT ISN'T A GOOD IDEA
 			if (thomasYPos >= (int) (heightOfScreen * 0.69))
 			{
 				if (util.isJumping)
 				{
 					isJumping = true;
 				} 
-//				else
-				{
-//					util.isJumping = false;
-				}
-				// System.out.println(isJumping);
 			}
 		}
 		if (e.getSource() == animationTicker)
 		{
 			roadXPos = roadXPos + movingVelocity;
-			if (movingVelocity > 12 || (movingVelocity > 0 && !(util.moveLeft || util.moveRight))){
+			if (movingVelocity > 12 || (movingVelocity > 0 && !(util.moveLeft || util.moveRight))  || movingVelocity > 0 && isNotMoving){ //allows Thomas to decelerate going right
 				movingVelocity -= 1;
 			}
-			if (movingVelocity < -12 || (movingVelocity < 0 && !(util.moveLeft || util.moveRight))){
+			if (movingVelocity < -12 || (movingVelocity < 0 && !(util.moveLeft || util.moveRight))  || movingVelocity < 0 && isNotMoving){ //allows Thomas to decelerate going left
 				movingVelocity ++;
 			}
 			if (util.moveLeft)
@@ -192,6 +184,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			if (util.moveLeft && util.moveRight)
 			{
 				isNotMoving = true;
+				//Figure out a way to make thomas' wheels stay still when moveLeft & moveRight are not activated
 			}
 
 			if (thomasYPos >= (int) (heightOfScreen * 0.69))
