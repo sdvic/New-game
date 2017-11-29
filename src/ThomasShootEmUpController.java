@@ -7,12 +7,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 import java.net.URL;
 
 public class ThomasShootEmUpController extends JComponent implements ActionListener, Runnable
 {
 	private ImageIcon[] images = new ImageIcon[8];
 	private Image gun;
+	private int gunDirection;
 	private int widthOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
 	private int heightOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
 	private JFrame mainGameWindow = new JFrame("NewGame");// Makes window with
@@ -77,8 +79,8 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		// TODO:WORK ON MAKING THOMAS ACCELERATE BEFORE HE REACHES FULL SPEED
 		g2.scale(-1, 1);
 		g2.scale((double) (1 / g2.getTransform().getScaleX()) * 0.9, 1 * 0.9);
-		 g2.drawImage(gun, thomasXPos + 150, (int) (heightOfScreen * 0.70),
-		 -gun.getWidth(this) / 2, gun.getHeight(this) / 2, null);
+		g2.drawImage(gun, thomasXPos + 150, thomasYPos + (int)(thomasYPos * 0.01),
+		 gunDirection, gun.getHeight(this) / 2, null);
 		Image im = thomasImageIcon.getImage();
 		if (isGoingRight)
 		{
@@ -86,6 +88,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
 			tx.translate(-thomasXPos - (thomasXPos / 3), thomasYPos);
 			g2.drawImage(im, tx, null);
+			gunDirection = gun.getWidth(this) / 2;
 		}
 		if (isGoingLeft)
 		{
@@ -93,6 +96,9 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			AffineTransform tx = AffineTransform.getScaleInstance(1, 1);
 			tx.translate(thomasXPos - (thomasXPos / 6), thomasYPos);
 			g2.drawImage(im, tx, null);
+			g2.setColor(Color.green);
+			g2.drawRect(thomasXPos - (thomasXPos / 6), thomasYPos, thomasImageIcon.getIconWidth(), thomasImageIcon.getIconHeight());
+			gunDirection = -gun.getWidth(this) / 2;
 		}
 		if(!util.isJumping && jumpingVelocity < 0){
 			gravityAcceleration = 3;
@@ -107,15 +113,17 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		int trackWidth = tracksImage.getWidth(mainGameWindow);
 		int roadWidth =  roadImage.getWidth(mainGameWindow);
 		g2.scale(2, 2);
-		for (int i = -5; i < 5; i++)
+		for (int i = -5; i < 5; i++) //for loop that condenses the drawing of the roads
 		{
-			g2.drawImage(roadImage, roadXPos + roadWidth * i, groundLevelTrackYPos, this);
+			g2.drawImage(roadImage, roadXPos + roadWidth * i, groundLevelTrackYPos, this); 
 		}
-		for (int i = -4; i < 4; i++)
+		for (int i = -4; i < 4; i++) //for loop that condenses the drawing of the tracks
 		{
 			g2.drawImage(tracksImage, roadXPos + trackWidth * i, groundLevelTrackYPos, this);
 		}
-		g2.drawImage(tracksImage, roadXPos, level2TrackYPos, this);
+		g2.setColor(Color.green);
+		g2.drawRect(roadXPos, level2TrackYPos, tracksImage.getWidth(mainGameWindow), tracksImage.getHeight(mainGameWindow));
+		g2.drawImage(tracksImage, roadXPos, level2TrackYPos, this); //draws an elevated set of tracks
 		if (roadXPos > mainGameWindow.getWidth())
 		{
 			roadXPos = -mainGameWindow.getWidth() / 4;
