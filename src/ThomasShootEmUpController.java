@@ -42,6 +42,9 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private int movingVelocity;
 	public ThomasUtilites util = new ThomasUtilites(jumpingVelocity);
 	private int gravityAcceleration = 1;
+	Rectangle2D.Double thomasRectLeft;
+	Rectangle2D.Double thomasRectRight;
+	Rectangle2D.Double upperTracksRect;
 	URL thomasThemeAddress = getClass().getResource("Thomas The Tank Engine Theme Song.wav");
 	AudioClip thomasThemeSong = JApplet.newAudioClip(thomasThemeAddress);
 
@@ -76,6 +79,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	public void paint(Graphics g)
 	{
 		Graphics2D g2 = (Graphics2D) g;
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		// TODO:WORK ON MAKING THOMAS ACCELERATE BEFORE HE REACHES FULL SPEED
 		g2.scale(-1, 1);
 		g2.scale((double) (1 / g2.getTransform().getScaleX()) * 0.9, 1 * 0.9);
@@ -84,20 +88,26 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		Image im = thomasImageIcon.getImage();
 		if (isGoingRight)
 		{
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			thomasImageIcon = images[pictureCounter];
 			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
 			tx.translate(-thomasXPos - (thomasXPos / 3), thomasYPos);
 			g2.drawImage(im, tx, null);
+			g2.setColor(Color.green);
+			thomasRectRight = new Rectangle2D.Double(thomasXPos - (thomasXPos / 6), thomasYPos, thomasImageIcon.getIconWidth(), thomasImageIcon.getIconHeight());
+			g2.draw(thomasRectRight);
 			gunDirection = gun.getWidth(this) / 2;
 		}
 		if (isGoingLeft)
 		{
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			thomasImageIcon = images[pictureCounter];
 			AffineTransform tx = AffineTransform.getScaleInstance(1, 1);
 			tx.translate(thomasXPos - (thomasXPos / 6), thomasYPos);
 			g2.drawImage(im, tx, null);
 			g2.setColor(Color.green);
-			g2.drawRect(thomasXPos - (thomasXPos / 6), thomasYPos, thomasImageIcon.getIconWidth(), thomasImageIcon.getIconHeight());
+			thomasRectLeft = new Rectangle2D.Double(thomasXPos - (thomasXPos / 6), thomasYPos, thomasImageIcon.getIconWidth(), thomasImageIcon.getIconHeight());
+			g2.draw(thomasRectLeft);
 			gunDirection = -gun.getWidth(this) / 2;
 		}
 		if(!util.isJumping && jumpingVelocity < 0){
@@ -105,6 +115,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		}
 		if (util.isJumping || thomasYPos < (int) (heightOfScreen * 0.69))
 		{
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			thomasImageIcon = images[pictureCounter];
 			thomasYPos += jumpingVelocity;
 			jumpingVelocity += gravityAcceleration;
@@ -122,8 +133,13 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			g2.drawImage(tracksImage, roadXPos + trackWidth * i, groundLevelTrackYPos, this);
 		}
 		g2.setColor(Color.green);
-		g2.drawRect(roadXPos, level2TrackYPos, tracksImage.getWidth(mainGameWindow), tracksImage.getHeight(mainGameWindow));
+		upperTracksRect = new Rectangle2D.Double(roadXPos, level2TrackYPos, tracksImage.getWidth(mainGameWindow), tracksImage.getHeight(mainGameWindow));
+		g2.draw(upperTracksRect);
 		g2.drawImage(tracksImage, roadXPos, level2TrackYPos, this); //draws an elevated set of tracks
+		if (upperTracksRect.contains(thomasRectLeft))//NEED TO FIX: intersection area is shifted to the left of the upper tracks
+		{
+			System.out.println("crash");
+		}
 		if (roadXPos > mainGameWindow.getWidth())
 		{
 			roadXPos = -mainGameWindow.getWidth() / 4;
