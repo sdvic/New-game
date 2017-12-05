@@ -17,8 +17,8 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private int gunDirection;
 	private int widthOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
 	private int heightOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
-	private JFrame mainGameWindow = new JFrame("NewGame");// Makes window with
-															// title "NewGame"
+	private JFrame mainGameWindow = new JFrame("NewGame");// Makes window with title "NewGame"
+	private AffineTransform identityTx = new AffineTransform();
 	private Timer paintTicker = new Timer(20, this);
 	private Timer animationTicker = new Timer(45, this);
 	private ImageIcon thomasImageIcon = new ImageIcon();
@@ -42,6 +42,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private int movingVelocity;
 	public ThomasUtilites util = new ThomasUtilites(jumpingVelocity);
 	private int gravityAcceleration = 1;
+	AffineTransform tx;
 	Rectangle2D.Double thomasRectLeft;
 	Rectangle2D.Double thomasRectRight;
 	Rectangle2D.Double upperTracksRect;
@@ -74,35 +75,33 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		mainGameWindow.addKeyListener(util);
 		thomasThemeSong.play();
 		isGoingLeft = true;
+		isGoingRight = false;
 	}
 
 	public void paint(Graphics g)
 	{
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		// TODO:WORK ON MAKING THOMAS ACCELERATE BEFORE HE REACHES FULL SPEED
 		g2.scale(-1, 1);
 		g2.scale((double) (1 / g2.getTransform().getScaleX()) * 0.9, 1 * 0.9);
-		g2.drawImage(gun, thomasXPos + 150, thomasYPos + (int)(thomasYPos * 0.01),
-		 gunDirection, gun.getHeight(this) / 2, null);
+//		g2.drawImage(gun, thomasXPos + 150, thomasYPos + (int)(thomasYPos * 0.01),
+//		 gunDirection, gun.getHeight(this) / 2, null);
 		Image im = thomasImageIcon.getImage();
 		if (isGoingRight)
 		{
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2.setTransform(identityTx); //resets the scale to 1-1 TODO: try using this to reset all the transforms before everything is drawn
 			thomasImageIcon = images[pictureCounter];
-			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+			tx = AffineTransform.getScaleInstance(-1, 1);
 			tx.translate(-thomasXPos - (thomasXPos / 3), thomasYPos);
 			g2.drawImage(im, tx, null);
 			g2.setColor(Color.green);
 			thomasRectRight = new Rectangle2D.Double(thomasXPos - (thomasXPos / 6), thomasYPos, thomasImageIcon.getIconWidth(), thomasImageIcon.getIconHeight());
-			g2.draw(thomasRectRight);
 			gunDirection = gun.getWidth(this) / 2;
 		}
 		if (isGoingLeft)
 		{
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			thomasImageIcon = images[pictureCounter];
-			AffineTransform tx = AffineTransform.getScaleInstance(1, 1);
+			tx = AffineTransform.getScaleInstance(1, 1);
 			tx.translate(thomasXPos - (thomasXPos / 6), thomasYPos);
 			g2.drawImage(im, tx, null);
 			g2.setColor(Color.green);
@@ -115,7 +114,6 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		}
 		if (util.isJumping || thomasYPos < (int) (heightOfScreen * 0.69))
 		{
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			thomasImageIcon = images[pictureCounter];
 			thomasYPos += jumpingVelocity;
 			jumpingVelocity += gravityAcceleration;
@@ -136,7 +134,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		upperTracksRect = new Rectangle2D.Double(roadXPos, level2TrackYPos, tracksImage.getWidth(mainGameWindow), tracksImage.getHeight(mainGameWindow));
 		g2.draw(upperTracksRect);
 		g2.drawImage(tracksImage, roadXPos, level2TrackYPos, this); //draws an elevated set of tracks
-		if (upperTracksRect.contains(thomasRectLeft))//NEED TO FIX: intersection area is shifted to the left of the upper tracks
+		if (upperTracksRect.intersects(thomasRectLeft))//NEED TO FIX: intersection area is shifted to the left of the upper tracks
 		{
 			System.out.println("crash");
 		}
@@ -156,7 +154,6 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		
 		if (e.getSource() == paintTicker)
 		{
 			repaint();
@@ -182,25 +179,20 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 				isGoingLeft = true;
 				isGoingRight = false;
 				isNotMoving = false;
-				if (!isNotMoving)
-				{
-					pictureCounter = (pictureCounter + 1) % 8;
-				}
 				thomasImageIcon = images[pictureCounter];
 				movingVelocity = movingVelocity + 1;
 				repaint();
+			}
+			if (!isNotMoving && (util.moveLeft || util.moveRight))
+			{
+				pictureCounter = (pictureCounter + 1) % 8;
 			}
 			if (util.moveRight)
 			{
 				isGoingRight = true;
 				isGoingLeft = false;
 				isNotMoving = false;
-				if (!isNotMoving)
-				{
-					pictureCounter = (pictureCounter + 1) % 8;
-				}
 				thomasImageIcon = images[pictureCounter];
-
 				AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
 				movingVelocity = movingVelocity - 1;
 				repaint();
