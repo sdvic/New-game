@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.net.URL;
@@ -29,8 +30,9 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private Image roadImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("ground.png"));
 	private Image tracksImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("Standard Gauge Train Track Sprite.png"));
 	private int roadXPos = 0;
-	private int groundLevelTrackYPos = (int) (heightOfScreen * 0.449);
+	private int groundLevelTrackYPos = (int) (heightOfScreen * 0.809);
 	private int level2TrackYPos = (int) (heightOfScreen * 0.2);
+	private double trackScale = 1.7;
 	private boolean isGoingRight;
 	private boolean isGoingLeft;
 	private boolean isNotMoving;
@@ -42,10 +44,8 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private int movingVelocity;
 	public ThomasUtilites util = new ThomasUtilites(jumpingVelocity);
 	private int gravityAcceleration = 1;
+	Rectangle2D.Double upperTrackDetectionZone = new Rectangle2D.Double(0,0,220,220);
 	AffineTransform tx;
-	Rectangle2D.Double thomasRectLeft;
-	Rectangle2D.Double thomasRectRight;
-	Rectangle2D.Double upperTracksRect;
 	URL thomasThemeAddress = getClass().getResource("Thomas The Tank Engine Theme Song.wav");
 	AudioClip thomasThemeSong = JApplet.newAudioClip(thomasThemeAddress);
 
@@ -82,32 +82,25 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	{
 		Graphics2D g2 = (Graphics2D) g;
 		// TODO:WORK ON MAKING THOMAS ACCELERATE BEFORE HE REACHES FULL SPEED
-		g2.scale(-1, 1);
-		g2.scale((double) (1 / g2.getTransform().getScaleX()) * 0.9, 1 * 0.9);
-//		g2.drawImage(gun, thomasXPos + 150, thomasYPos + (int)(thomasYPos * 0.01),
-//		 gunDirection, gun.getHeight(this) / 2, null);
+		g2.setTransform(identityTx);
 		Image im = thomasImageIcon.getImage();
 		if (isGoingRight)
 		{
-			g2.setTransform(identityTx); //resets the scale to 1-1 TODO: try using this to reset all the transforms before everything is drawn
+			g2.setTransform(identityTx);
+			g2.scale(0.9, 0.9);
 			thomasImageIcon = images[pictureCounter];
 			tx = AffineTransform.getScaleInstance(-1, 1);
 			tx.translate(-thomasXPos - (thomasXPos / 3), thomasYPos);
 			g2.drawImage(im, tx, null);
-			g2.setColor(Color.green);
-			thomasRectRight = new Rectangle2D.Double(thomasXPos - (thomasXPos / 6), thomasYPos, thomasImageIcon.getIconWidth(), thomasImageIcon.getIconHeight());
-			gunDirection = gun.getWidth(this) / 2;
 		}
 		if (isGoingLeft)
 		{
+			g2.setTransform(identityTx);
+			g2.scale(0.9, 0.9);
 			thomasImageIcon = images[pictureCounter];
 			tx = AffineTransform.getScaleInstance(1, 1);
-			tx.translate(thomasXPos - (thomasXPos / 6), thomasYPos);
+			tx.translate(thomasXPos - (thomasXPos / 3), thomasYPos);
 			g2.drawImage(im, tx, null);
-			g2.setColor(Color.green);
-			thomasRectLeft = new Rectangle2D.Double(thomasXPos - (thomasXPos / 6), thomasYPos, thomasImageIcon.getIconWidth(), thomasImageIcon.getIconHeight());
-			g2.draw(thomasRectLeft);
-			gunDirection = -gun.getWidth(this) / 2;
 		}
 		if(!util.isJumping && jumpingVelocity < 0){
 			gravityAcceleration = 3;
@@ -121,23 +114,30 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		}
 		int trackWidth = tracksImage.getWidth(mainGameWindow);
 		int roadWidth =  roadImage.getWidth(mainGameWindow);
-		g2.scale(2, 2);
 		for (int i = -5; i < 5; i++) //for loop that condenses the drawing of the roads
 		{
-			g2.drawImage(roadImage, roadXPos + roadWidth * i, groundLevelTrackYPos, this); 
+			g2.setTransform(identityTx);
+			g2.translate(roadXPos + roadWidth * i,  groundLevelTrackYPos);
+			g2.scale(trackScale, trackScale);
+			g2.drawImage(roadImage, 0, 0, this); 
 		}
 		for (int i = -4; i < 4; i++) //for loop that condenses the drawing of the tracks
 		{
-			g2.drawImage(tracksImage, roadXPos + trackWidth * i, groundLevelTrackYPos, this);
+			g2.setTransform(identityTx);
+			g2.translate(roadXPos + trackWidth * trackScale * i,  groundLevelTrackYPos);
+			g2.scale(trackScale, trackScale);
+			g2.drawImage(tracksImage, 0, 0, this);
 		}
 		g2.setColor(Color.green);
-		upperTracksRect = new Rectangle2D.Double(roadXPos, level2TrackYPos, tracksImage.getWidth(mainGameWindow), tracksImage.getHeight(mainGameWindow));
-		g2.draw(upperTracksRect);
-		g2.drawImage(tracksImage, roadXPos, level2TrackYPos, this); //draws an elevated set of tracks
-		if (upperTracksRect.intersects(thomasRectLeft))//NEED TO FIX: intersection area is shifted to the left of the upper tracks
-		{
-			System.out.println("crash");
-		}
+		
+		g2.setTransform(identityTx);
+		g2.scale(trackScale, trackScale);
+		g2.translate(roadXPos, 0);
+		g2.drawImage(tracksImage, 0, level2TrackYPos, this); //draws an elevated set of tracks
+		g2.setTransform(identityTx);
+		g2.translate(roadXPos, level2TrackYPos);
+		g2.draw(upperTrackDetectionZone); // upper tracks detection zone rectangle
+		
 		if (roadXPos > mainGameWindow.getWidth())
 		{
 			roadXPos = -mainGameWindow.getWidth() / 4;
@@ -200,6 +200,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			if (util.moveLeft && util.moveRight)
 			{
 				isNotMoving = true;
+				pictureCounter = (pictureCounter + 0);
 				//Figure out a way to make thomas' wheels stay still when moveLeft & moveRight are not activated
 			}
 
