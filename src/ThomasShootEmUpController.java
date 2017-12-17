@@ -132,7 +132,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		
 		g2.setTransform(identityTx);
 		g2.scale(trackScale, trackScale);
-		g2.translate(roadXPos, 0);
+		g2.translate(roadXPos/trackScale, 0);
 		g2.drawImage(tracksImage, 0, level2TrackYPos, this); //draws an elevated set of tracks
 		g2.setTransform(identityTx);
 		g2.translate(roadXPos, level2TrackYPos);
@@ -169,7 +169,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		{
 			roadXPos = roadXPos + movingVelocity;
 			if (movingVelocity > 12 || (movingVelocity > 0 && !(util.moveLeft || util.moveRight))  || movingVelocity > 0 && isNotMoving){ //allows Thomas to decelerate going right
-				movingVelocity -= 1;
+				movingVelocity --;
 			}
 			if (movingVelocity < -12 || (movingVelocity < 0 && !(util.moveLeft || util.moveRight))  || movingVelocity < 0 && isNotMoving){ //allows Thomas to decelerate going left
 				movingVelocity ++;
