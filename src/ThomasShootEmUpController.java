@@ -39,6 +39,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private boolean isJumping;
 	private boolean isFalling;
 	private int position;
+	private int thomasMaxSpeed = 22;
 	private int initialJumpingVelocity = -37;
 	public int jumpingVelocity = initialJumpingVelocity;
 	private int movingVelocity;
@@ -168,10 +169,10 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		if (e.getSource() == animationTicker)
 		{
 			roadXPos = roadXPos + movingVelocity;
-			if (movingVelocity > 12 || (movingVelocity > 0 && !(util.moveLeft || util.moveRight))  || movingVelocity > 0 && isNotMoving){ //allows Thomas to decelerate going right
+			if (movingVelocity > thomasMaxSpeed || (movingVelocity > 0 && !(util.moveLeft || util.moveRight))  || movingVelocity > 0 && isNotMoving){ //allows Thomas to decelerate going right
 				movingVelocity --;
 			}
-			if (movingVelocity < -12 || (movingVelocity < 0 && !(util.moveLeft || util.moveRight))  || movingVelocity < 0 && isNotMoving){ //allows Thomas to decelerate going left
+			if (movingVelocity < -thomasMaxSpeed || (movingVelocity < 0 && !(util.moveLeft || util.moveRight))  || movingVelocity < 0 && isNotMoving){ //allows Thomas to decelerate going left
 				movingVelocity ++;
 			}
 			if (util.moveLeft)
