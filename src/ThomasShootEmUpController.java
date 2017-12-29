@@ -45,7 +45,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private int movingVelocity;
 	public ThomasUtilites util = new ThomasUtilites(jumpingVelocity);
 	private int gravityAcceleration = 1;
-	Rectangle2D.Double upperTrackDetectionZone = new Rectangle2D.Double(0,0,220,220);
+	Rectangle2D.Double upperTrackDetectionZone = new Rectangle2D.Double(0,0,200,49);
 	AffineTransform tx;
 	URL thomasThemeAddress = getClass().getResource("Thomas The Tank Engine Theme Song.wav");
 	AudioClip thomasThemeSong = JApplet.newAudioClip(thomasThemeAddress);
@@ -82,8 +82,9 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	public void paint(Graphics g)
 	{
 		Graphics2D g2 = (Graphics2D) g;
-		// TODO:WORK ON MAKING THOMAS ACCELERATE BEFORE HE REACHES FULL SPEED
+		// TODO:MAKE TWO RECTANGLES. ONE AROUND THOMAS, AND ANOTHER AROUND THE ELEVATED TRACKS
 		g2.setTransform(identityTx);
+//		g2.draw(s);
 		Image im = thomasImageIcon.getImage();
 		if (isGoingRight)
 		{
@@ -130,7 +131,6 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			g2.drawImage(tracksImage, 0, 0, this);
 		}
 		g2.setColor(Color.green);
-		
 		g2.setTransform(identityTx);
 		g2.scale(trackScale, trackScale);
 		g2.translate(roadXPos/trackScale, 0);
@@ -138,7 +138,6 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		g2.setTransform(identityTx);
 		g2.translate(roadXPos, level2TrackYPos);
 		g2.draw(upperTrackDetectionZone); // upper tracks detection zone rectangle
-		
 		if (roadXPos > mainGameWindow.getWidth())
 		{
 			roadXPos = -mainGameWindow.getWidth() / 4;
