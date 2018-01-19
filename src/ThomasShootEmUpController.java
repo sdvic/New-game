@@ -13,8 +13,8 @@ import java.net.URL;
 import static javax.imageio.ImageIO.read;
 //TODO: MAKE THE TRACKS APPEAR IN THEIR CORRECT PLACES
 /***********************************************************************************************
- * David Frieder's Thomas Game Copyright 2018 David Frieder 1/13/2018 rev 1.2
- * Paints only with animation ticker
+ * David Frieder's Thomas Game Copyright 2018 David Frieder 1/18/2018 rev 1.3
+ * Moves left and right, and transitions correctly when moving off the screen
  ***********************************************************************************************/
 public class ThomasShootEmUpController extends JComponent implements ActionListener, Runnable, KeyListener
 {
