@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import java.applet.AudioClip;
 import java.awt.*;
@@ -12,10 +11,10 @@ import java.io.IOException;
 import java.net.URL;
 
 import static javax.imageio.ImageIO.read;
-
+//TODO: MAKE THE TRACKS APPEAR IN THEIR CORRECT PLACES
 /***********************************************************************************************
- * David Frieder's Thomas Game Copyright 2018 David Frieder
- * 1/13/2018 rev 1.1 
+ * David Frieder's Thomas Game Copyright 2018 David Frieder 1/13/2018 rev 1.2
+ * Paints only with animation ticker
  ***********************************************************************************************/
 public class ThomasShootEmUpController extends JComponent implements ActionListener, Runnable, KeyListener
 {
@@ -28,13 +27,12 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private int widthOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
 	private int heightOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
 	private JFrame mainGameWindow = new JFrame("NewGame");// Makes window with
-															// title "NewGame"
+	// title "NewGame"
 	private AffineTransform identityTx = new AffineTransform();
 	private AffineTransform thomasTx = new AffineTransform();// Set Thomas to 0,
-																// 0
+	// 0
 	private AffineTransform backgroundTx = new AffineTransform();
 	private Timer animationTicker = new Timer(50, this);
-	private Timer paintTicker = new Timer(70, this);
 	private Image thomasSpriteImage;
 	private int thomasSpriteImageCounter;
 	private Image roadImage;
@@ -71,7 +69,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		loadImages();
 		setUpMainGameWindow();
 		thomasThemeSong.loop();
-		paintTicker.start();
+		animationTicker.start();
 	}
 
 	/***********************************************************************************************
@@ -80,10 +78,10 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	public void paint(Graphics g)
 	{
 		g2 = (Graphics2D) g;
+		drawThomas();
 		drawRoad();// ........................ Draw Road
 		drawUpperTracks();// ................. Draw Upper Tracks
 		drawLowerTracks();// ................. Draw Lower Tracks
-		drawThomas();
 	}
 
 	/***********************************************************************************************
@@ -94,7 +92,12 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		g2.setTransform(backgroundTx);
 		g2.translate(-widthOfScreen, heightOfScreen - 200);
 		g2.scale(1.5, 1.5);
-		for (int i = 0; i < (2 * (widthOfScreen / roadImage.getWidth(null))) + 2; i++) // fits road images to screen width
+		for (int i = 0; i < (2 * (widthOfScreen / roadImage.getWidth(null))) + 2; i++) // fits
+																						// road
+																						// images
+																						// to
+																						// screen
+																						// width
 		{
 			g2.drawImage(roadImage, 0, 0, null);
 			g2.translate(roadImage.getWidth(null), 0);
@@ -124,7 +127,12 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		g2.setTransform(backgroundTx);
 		g2.translate(-widthOfScreen, heightOfScreen - 200);
 		g2.scale(1.5, 1.5);
-		for (int i = 0; i < (2 * (widthOfScreen / trackImage.getWidth(null))) + 2; i++) // fits track images to screen width
+		for (int i = 0; i < (2 * (widthOfScreen / trackImage.getWidth(null))) + 2; i++) // fits
+																						// track
+																						// images
+																						// to
+																						// screen
+																						// width
 		{
 			g2.drawImage(trackImage, 0, 0, null);
 			g2.translate(trackImage.getWidth(null), 0);
@@ -141,7 +149,6 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		g2.setTransform(thomasTx);
 		try
 		{
-			thomasSpriteImageCounter++;
 			thomasSpriteImageCounter = thomasSpriteImageCounter % 8;
 			thomasSpriteImage = thomasSpriteImageArray[thomasSpriteImageCounter];
 			g2.drawImage(thomasSpriteImage, 0, 0, null);
@@ -158,26 +165,39 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		if (e.getSource() == paintTicker)
+		if (isGoingLeft == true)
 		{
-			repaint();
-		}
-		if (e.getSource() == animationTicker)
-		{
-			if (g2 != null)
+			if (e.getSource() == animationTicker)
 			{
-				if (isGoingLeft)
+				if (g2 != null)
 				{
-					movingVelocity++;
-					backgroundTx.setToTranslation(backgroundTx.getTranslateX() + movingVelocity, 0);
+					thomasSpriteImageCounter++;
+					backgroundTx.setToTranslation(backgroundTx.getTranslateX() + 20, 0);
 					if (backgroundTx.getTranslateX() > widthOfScreen)
 					{
-						backgroundTx = new AffineTransform();
+						backgroundTx.setToTranslation(-widthOfScreen, 0);
 					}
-					if (movingVelocity > thomasMaxSpeed)
+					repaint();
+				}
+			}
+		}
+		if (isGoingRight == true)
+		{
+			if (e.getSource() == animationTicker)
+			{
+				if (g2 != null)
+				{
+					thomasSpriteImageCounter--;
+					if (thomasSpriteImageCounter < 0)
 					{
-						movingVelocity--;
+						thomasSpriteImageCounter = 7;
 					}
+					backgroundTx.setToTranslation(backgroundTx.getTranslateX() - 20, 0);
+					if (backgroundTx.getTranslateX() < -widthOfScreen)
+					{
+						backgroundTx.setToTranslation(widthOfScreen, 0);
+					}
+					repaint();
 				}
 			}
 		}
