@@ -11,10 +11,11 @@ import java.io.IOException;
 import java.net.URL;
 
 import static javax.imageio.ImageIO.read;
+
 //TODO: MAKE THE TRACKS APPEAR IN THEIR CORRECT PLACES
 /***********************************************************************************************
- * David Frieder's Thomas Game Copyright 2018 David Frieder 1/18/2018 rev 1.3
- * Moves left and right, and transitions correctly when moving off the screen
+ * David Frieder's Thomas Game Copyright 2018 David Frieder 1/31/2018 rev 1.4
+ * Moves up, and tracks spawn at start of game
  ***********************************************************************************************/
 public class ThomasShootEmUpController extends JComponent implements ActionListener, Runnable, KeyListener
 {
@@ -29,7 +30,9 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private JFrame mainGameWindow = new JFrame("NewGame");// Makes window with
 	// title "NewGame"
 	private AffineTransform identityTx = new AffineTransform();
-	private AffineTransform thomasTransform = new AffineTransform();// Set Thomas to 0,
+	private AffineTransform thomasTransform = new AffineTransform();// Set
+																	// Thomas to
+																	// 0,
 	// 0
 	private AffineTransform backgroundTx = new AffineTransform();
 	private Timer animationTicker = new Timer(50, this);
@@ -46,7 +49,6 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private int thomasMaxSpeed = 13;
 	private int initialJumpingVelocity = -37;
 	public int jumpingVelocity = initialJumpingVelocity;
-	public int thomasYvelocity;
 	private int movingVelocity;
 	private int gravityAcceleration = 1;
 	private Graphics2D g2;
@@ -94,7 +96,12 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		g2.setTransform(backgroundTx);
 		g2.translate(-widthOfScreen, heightOfScreen - 200);
 		g2.scale(1.5, 1.5);
-		for (int i = 0; i < (2 * (widthOfScreen / roadImage.getWidth(null))) + 2; i++) // fits road images to screen width
+		for (int i = 0; i < (2 * (widthOfScreen / roadImage.getWidth(null))) + 2; i++) // fits
+																						// road
+																						// images
+																						// to
+																						// screen
+																						// width
 		{
 			g2.drawImage(roadImage, 0, 0, null);
 			g2.translate(roadImage.getWidth(null), 0);
@@ -124,11 +131,17 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		g2.setTransform(backgroundTx);
 		g2.translate(-widthOfScreen, heightOfScreen - 200);
 		g2.scale(1.5, 1.5);
-		for (int i = 0; i < (2 * (widthOfScreen / trackImage.getWidth(null))) + 2; i++) // fits track images to screen width
+		for (int i = 0; i < (2 * (widthOfScreen / trackImage.getWidth(null))) + 2; i++) // fits
+																						// track
+																						// images
+																						// to
+																						// screen
+																						// width
 		{
 			g2.drawImage(trackImage, 0, 0, null);
 			g2.translate(trackImage.getWidth(null), 0);
 		}
+		repaint();
 	}
 	/***********************************************************************************************
 	 * Draw Thomas with sprite files
@@ -136,13 +149,13 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	public void drawThomas()
 	{
 		g2.setTransform(backgroundTx);
-		thomasTransform.setToTranslation(widthOfScreen/3, heightOfScreen - 420);
+		thomasTransform.setToTranslation(widthOfScreen / 3, heightOfScreen - 420);
 		g2.setTransform(thomasTransform);
 		try
 		{
 			thomasSpriteImageCounter = thomasSpriteImageCounter % 8;
 			thomasSpriteImage = thomasSpriteImageArray[thomasSpriteImageCounter];
-//TODO: SET THOMAS TRANSFORM TO - Y
+			thomasTransform.setToTranslation(widthOfScreen / 3, heightOfScreen - 420 + thomasYPos);
 			g2.setTransform(thomasTransform);
 			g2.drawImage(thomasSpriteImage, 0, 0, null);
 
@@ -158,6 +171,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
+		thomasTransform.setToTranslation(0, thomasYPos);
 		if (isGoingLeft == true)
 		{
 			if (e.getSource() == animationTicker)
@@ -198,14 +212,13 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		{
 			if (e.getSource() == animationTicker)
 			{
-				if (g2 != null)
-				{
-					thomasYvelocity += initialJumpingVelocity;
-					thomasTransform.setToTranslation(0, thomasYvelocity);
-					System.out.println(thomasTransform.getTranslateY());
-				}
+			if (g2 != null)
+			{
+				thomasYPos += initialJumpingVelocity;
+				System.out.println(thomasTransform.getTranslateY());
 			}
-		}
+			repaint();
+		}}
 	}
 
 	/***********************************************************************************************
