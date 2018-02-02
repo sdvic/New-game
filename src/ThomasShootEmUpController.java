@@ -14,8 +14,8 @@ import static javax.imageio.ImageIO.read;
 
 //TODO: MAKE THE TRACKS APPEAR IN THEIR CORRECT PLACES
 /***********************************************************************************************
- * David Frieder's Thomas Game Copyright 2018 David Frieder 1/31/2018 rev 1.4
- * Moves up, and tracks spawn at start of game
+ * David Frieder's Thomas Game Copyright 2018 David Frieder 2/1/2018 rev 1.5
+ * Thomas can jump now
  ***********************************************************************************************/
 public class ThomasShootEmUpController extends JComponent implements ActionListener, Runnable, KeyListener {
 	public boolean isGoingRight = false;
