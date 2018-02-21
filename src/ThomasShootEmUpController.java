@@ -23,6 +23,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private URL thomasThemeAddress = getClass().getResource("ThomasThemeSong.wav");
 	private AudioClip thomasThemeSong = JApplet.newAudioClip(thomasThemeAddress);
 	private Image[] thomasSpriteImageArray = new Image[8];
+	private Image[] reverseThomasImageArray = new Image[8];
 	private Image gun = Toolkit.getDefaultToolkit().createImage(getClass().getResource("Minigun_SU.png"));
 	private int widthOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
 	private int heightOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
@@ -144,6 +145,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	public void drawThomas() {
 		g2.setTransform(backgroundTx);
 		thomasTransform.setToTranslation(widthOfScreen / 3, heightOfScreen - 420);
+		
 		g2.setTransform(thomasTransform);
 		try {
 			thomasSpriteImageCounter = thomasSpriteImageCounter % 8;
@@ -257,9 +259,9 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	 ***********************************************************************************************/
 	private void loadImages() {
 		try {
-			thomasSpriteImageArray[0] = read(getClass().getResource("Thomas1.png"));
-			thomasSpriteImageArray[1] = read(getClass().getResource("Thomas2.png"));
-			thomasSpriteImageArray[2] = read(getClass().getResource("Thomas3.png"));
+			thomasSpriteImageArray[0] = read(getClass().getResource("edited Thomas 1.png"));
+			thomasSpriteImageArray[1] = read(getClass().getResource("edited Thomas 2.png"));
+			thomasSpriteImageArray[2] = read(getClass().getResource("edited Thomas 3.png"));
 			thomasSpriteImageArray[3] = read(getClass().getResource("Thomas4.png"));
 			thomasSpriteImageArray[4] = read(getClass().getResource("Thomas5.png"));
 			thomasSpriteImageArray[5] = read(getClass().getResource("Thomas6.png"));
