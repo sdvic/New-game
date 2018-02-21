@@ -259,11 +259,11 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	 ***********************************************************************************************/
 	private void loadImages() {
 		try {
-			thomasSpriteImageArray[0] = read(getClass().getResource("edited Thomas 1.png"));
-			thomasSpriteImageArray[1] = read(getClass().getResource("edited Thomas 2.png"));
-			thomasSpriteImageArray[2] = read(getClass().getResource("edited Thomas 3.png"));
-			thomasSpriteImageArray[3] = read(getClass().getResource("Thomas4.png"));
-			thomasSpriteImageArray[4] = read(getClass().getResource("Thomas5.png"));
+			thomasSpriteImageArray[0] = read(getClass().getResource("Thomas1.png"));
+			thomasSpriteImageArray[1] = read(getClass().getResource("Thomas2.png"));
+			thomasSpriteImageArray[2] = read(getClass().getResource("edited Thomas 1.png"));
+			thomasSpriteImageArray[3] = read(getClass().getResource("edited Thomas 2.png"));
+			thomasSpriteImageArray[4] = read(getClass().getResource("edited Thomas 3.png"));
 			thomasSpriteImageArray[5] = read(getClass().getResource("Thomas6.png"));
 			thomasSpriteImageArray[6] = read(getClass().getResource("Thomas7.png"));
 			thomasSpriteImageArray[7] = read(getClass().getResource("Thomas8.png"));
