@@ -38,6 +38,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private Timer animationTicker = new Timer(40, this);
 	private Timer jumpingTicker = new Timer(1000 / 60, this);
 	private Image thomasSpriteImage;
+	private Image reverseThomasImage;
 	private int thomasSpriteImageCounter;
 	private Image roadImage;
 	private Image trackImage;
@@ -261,12 +262,20 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		try {
 			thomasSpriteImageArray[0] = read(getClass().getResource("Thomas1.png"));
 			thomasSpriteImageArray[1] = read(getClass().getResource("Thomas2.png"));
-			thomasSpriteImageArray[2] = read(getClass().getResource("edited Thomas 1.png"));
-			thomasSpriteImageArray[3] = read(getClass().getResource("edited Thomas 2.png"));
-			thomasSpriteImageArray[4] = read(getClass().getResource("edited Thomas 3.png"));
+			thomasSpriteImageArray[2] = read(getClass().getResource("Thomas3.png"));
+			thomasSpriteImageArray[3] = read(getClass().getResource("Thomas4.png"));
+			thomasSpriteImageArray[4] = read(getClass().getResource("Thomas5.png"));
 			thomasSpriteImageArray[5] = read(getClass().getResource("Thomas6.png"));
 			thomasSpriteImageArray[6] = read(getClass().getResource("Thomas7.png"));
 			thomasSpriteImageArray[7] = read(getClass().getResource("Thomas8.png"));
+			reverseThomasImageArray[0] = read(getClass().getResource("Reversed Thomas1.png"));
+			reverseThomasImageArray[1] = read(getClass().getResource("Reversed Thomas2.png"));
+			reverseThomasImageArray[2] = read(getClass().getResource("Reversed Thomas3.png"));
+			reverseThomasImageArray[3] = read(getClass().getResource("Reversed Thomas4.png"));
+			reverseThomasImageArray[4] = read(getClass().getResource("Reversed Thomas5.png"));
+			reverseThomasImageArray[5] = read(getClass().getResource("Reversed Thomas6.png"));
+			reverseThomasImageArray[6] = read(getClass().getResource("Reversed Thomas7.png"));
+			reverseThomasImageArray[7] = read(getClass().getResource("Reversed Thomas8.png"));
 		} catch (IOException e) {
 			System.out.println("error reading from thomas sprite array");
 		}
