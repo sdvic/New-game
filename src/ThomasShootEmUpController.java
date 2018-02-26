@@ -56,6 +56,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private int roadWidth;
 	private int trackWidth;
 	private int thomasYPos = 0;
+	private boolean lastWayFacing = true;
 
 	/***********************************************************************************************
 	 * Main
@@ -151,10 +152,19 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		try {
 			thomasSpriteImageCounter = thomasSpriteImageCounter % 8;
 			thomasSpriteImage = thomasSpriteImageArray[thomasSpriteImageCounter];
+			reverseThomasImage = reverseThomasImageArray[thomasSpriteImageCounter];
 			thomasTransform.setToTranslation(widthOfScreen / 3, heightOfScreen - 420 + thomasYPos);
 			g2.setTransform(thomasTransform);
+			
+			if(isGoingLeft || lastWayFacing == true) {
 			g2.drawImage(thomasSpriteImage, 0, 0, null);
-
+			lastWayFacing = true;
+			}
+			if(isGoingRight || lastWayFacing == false)
+			{
+				g2.drawImage(reverseThomasImage, 0, 0, null);
+				lastWayFacing = false;
+			}
 		} catch (Exception ex) {
 			System.out.println("error reading thomas thomasSpriteImage from thomas sprite thomasSpriteImage array");
 		}
@@ -181,7 +191,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		if (isGoingRight == true) {
 			if (e.getSource() == animationTicker) {
 				if (g2 != null) {
-					thomasSpriteImageCounter--;
+					thomasSpriteImageCounter++;
 					if (thomasSpriteImageCounter < 0) {
 						thomasSpriteImageCounter = 7;
 					}
