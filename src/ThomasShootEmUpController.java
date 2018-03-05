@@ -9,13 +9,14 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.net.URL;
+import java.util.concurrent.SynchronousQueue;
 
 import static javax.imageio.ImageIO.read;
 
 //TODO: MAKE THE TRACKS APPEAR IN THEIR CORRECT PLACES
 /***********************************************************************************************
- * David Frieder's Thomas Game Copyright 2018 David Frieder 2/1/2018 rev 1.5
- * Thomas can jump now
+ * David Frieder's Thomas Game Copyright 2018 David Frieder 3/4/2018 rev 1.6
+ * Thomas can turn left and right with some bugginess
  ***********************************************************************************************/
 public class ThomasShootEmUpController extends JComponent implements ActionListener, Runnable, KeyListener {
 	public boolean isGoingRight = false;
@@ -207,7 +208,6 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			if (e.getSource() == jumpingTicker) {
 				if (g2 != null) {
 					thomasYPos += jumpingVelocity;
-					System.out.println(thomasTransform.getTranslateY());
 					jumpingVelocity += gravityAcceleration;
 				}
 				if (thomasYPos > 0)
@@ -226,7 +226,6 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	 ***********************************************************************************************/
 	@Override
 	public void keyTyped(KeyEvent e) {
-
 	}
 
 	/***********************************************************************************************
@@ -237,11 +236,19 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) // going right
 		{
 			isGoingRight = true;
+			isGoingLeft = false;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_LEFT) // going left
 		{
 			isGoingLeft = true;
+			isGoingRight = false;
 			animationTicker.start();
+		}
+		if (e.getKeyCode() == KeyEvent.VK_LEFT && e.getKeyCode() == KeyEvent.VK_RIGHT)
+		{
+			isGoingLeft = false;
+			isGoingRight = false;
+			System.out.println("yes");
 		}
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
 			isJumping = true;
