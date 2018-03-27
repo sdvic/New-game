@@ -220,32 +220,32 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			}
 		}
 	}
-	private boolean checkCollision()
-	{
-		for (Platform p : upperTrackDetectionZone)
-		{
-			if (thomasSpriteImage.get().intersects(p.get()))
-			{
-				handleCollision(p);
-				return true;
-			}
-		}
+//	private boolean checkCollision()
+//	{
+//		for (Platform p : upperTrackDetectionZone)
+//		{
+//			if (thomasSpriteImage.get().intersects(p.get()))
+//			{
+//				handleCollision(p);
+//				return true;
+//			}
+//		}
+//
+//		p1.setYLimit(500);
+//		return false;
+//	}
 
-		p1.setYLimit(500);
-		return false;
-	}
 
-
-	private void handleCollision(Platform p)
-	{
-		if (p1.getYVelocity() >= 0 && p1.getY() + p1.getHeight() < p.getY() + 25)
-		{
-			p1.setYLimit(p.getY() - p1.getHeight());
-		} else
-		{
-			p1.setYLimit(500);
-		}
-	}
+//	private void handleCollision(Platform p)
+//	{
+//		if (p1.getYVelocity() >= 0 && p1.getY() + p1.getHeight() < p.getY() + 25)
+//		{
+//			p1.setYLimit(p.getY() - p1.getHeight());
+//		} else
+//		{
+//			p1.setYLimit(500);
+//		}
+//	}
 
 	/***********************************************************************************************
 	 * Respond to key typed

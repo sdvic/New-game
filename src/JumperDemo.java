@@ -1,13 +1,18 @@
 
+import static javax.imageio.ImageIO.read;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import javax.swing.*;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,6 +22,7 @@ public class JumperDemo extends JPanel implements ActionListener, KeyListener
 {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
+	private Image thomasSpriteImage;
 
 	JFrame window;
 	Timer timer;
@@ -52,8 +58,9 @@ public class JumperDemo extends JPanel implements ActionListener, KeyListener
 
 	public void paintComponent(Graphics g)
 	{
-		p1.draw(g);
-
+		Graphics2D g2 = Graphics2D(g);
+		thomasSpriteImage = read(getClass().getResource("Thomas1.png"));
+		g2.draw(thomasSpriteImage);
 		for (Platform p : platforms)
 		{
 			p.draw(g);
@@ -260,8 +267,7 @@ class Player
 
 	public void draw(Graphics g)
 	{
-		g.setColor(Color.BLUE);
-		g.fillRect(x, y, width, height);
+		
 	}
 
 	public Rectangle getCBox()
