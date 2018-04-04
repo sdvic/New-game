@@ -58,9 +58,6 @@ public class JumperDemo extends JPanel implements ActionListener, KeyListener
 
 	public void paintComponent(Graphics g)
 	{
-		Graphics2D g2 = Graphics2D(g);
-		thomasSpriteImage = read(getClass().getResource("Thomas1.png"));
-		g2.draw(thomasSpriteImage);
 		for (Platform p : platforms)
 		{
 			p.draw(g);

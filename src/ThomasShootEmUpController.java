@@ -25,6 +25,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
     int upperTrackHeight;
     int upperTrackWidth;
     Rectangle upperTrackBox;
+    Rectangle upperTrackBox2;
     Shape upperTrackShape;
     int thomasBoxWidth;
     int thomasBoxHeight;
@@ -94,6 +95,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
      ***********************************************************************************************/
     public void paint(Graphics g)
     {
+    	repaint();
         g2 = (Graphics2D) g;
         drawThomas();
         drawRoad();// ........................ Draw Road
@@ -142,8 +144,9 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
             g2.translate(trackImage.getWidth(null), 0);
             upperTrackWidth = trackImage.getWidth(null);
             upperTrackHeight = trackImage.getHeight(null);
-            upperTrackBox = new Rectangle(-upperTrackWidth, 0, upperTrackWidth, upperTrackHeight);
-            upperTrackShape = upperTrackBox.getBounds();
+//            upperTrackBox = new Rectangle(-upperTrackWidth, 0, upperTrackWidth, upperTrackHeight);
+            upperTrackBox2 = new Rectangle(-2 * upperTrackWidth, 0 , upperTrackWidth, upperTrackHeight);
+            upperTrackShape = upperTrackBox2.getBounds();
             g2.setColor(Color.green);
             upperTrackTransform = g2.getTransform();
             g2.draw(upperTrackShape);
