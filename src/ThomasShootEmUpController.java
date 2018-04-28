@@ -22,7 +22,7 @@ import static javax.imageio.ImageIO.read;
 public class ThomasShootEmUpController extends JComponent implements ActionListener, Runnable, KeyListener
 {
 	public boolean isGoingRight = false;
-	int upperTrackHeight;
+	int upperTrackYOffset;
 	int upperTrackWidth;
 	Rectangle upperTrackBox;
 	Rectangle upperTrackBox2;
@@ -64,7 +64,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private Graphics2D g2;
 	private int roadWidth;
 	private int trackWidth;
-	private int thomasYPos = 0;
+	private int thomasYOffset = 0;
 	private boolean lastWayFacing = true;
 	private Area areaA;
 	private Area areaB;
@@ -103,9 +103,9 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		drawLowerTracks();// ................. Draw Lower Tracks
 		if (testIntersection(thomasShape, upperTrackShape))
 		{
-			if (jumpingVelocity > 0 && thomasYPos < upperTrackHeight)
+			if (jumpingVelocity > 0 && thomasYOffset < upperTrackYOffset)
 			{
-				thomasYPos = -7*upperTrackHeight - thomasBoxHeight;
+				thomasYOffset = -7*upperTrackYOffset - thomasBoxHeight;
 				jumpingVelocity = initialJumpingVelocity;
 				isJumping = false;
 				g2.setColor(Color.BLACK);
@@ -113,7 +113,10 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 				g2.fill(thomasShape);
 			}
 		}
-		
+//		else if(jumpingVelocity == 0)
+//		{
+//			thomasOffset = 200;
+//		}
 	}
 
 	/***********************************************************************************************
@@ -149,13 +152,11 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			g2.drawImage(trackImage, 0, 0, null);
 			g2.translate(trackImage.getWidth(null), 0);
 			upperTrackWidth = trackImage.getWidth(null);
-			upperTrackHeight = trackImage.getHeight(null);
+			upperTrackYOffset = trackImage.getHeight(null);
 		}
-		upperTrackBox2 = new Rectangle(-2 * upperTrackWidth, 0, 2 * upperTrackWidth, upperTrackHeight);
+		upperTrackBox2 = new Rectangle(-2 * upperTrackWidth, 0, 2 * upperTrackWidth, upperTrackYOffset);
 		upperTrackShape = upperTrackBox2.getBounds();
-		// g2.setColor(Color.green);
 		upperTrackTransform = g2.getTransform();
-		// g2.draw(upperTrackShape);
 	}
 
 	/***********************************************************************************************
@@ -191,7 +192,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			thomasSpriteImageCounter = thomasSpriteImageCounter % 8;
 			thomasSpriteImage = thomasSpriteImageArray[thomasSpriteImageCounter];
 			reverseThomasImage = reverseThomasImageArray[thomasSpriteImageCounter];
-			thomasTransform.setToTranslation(widthOfScreen / 3, heightOfScreen - 420 + thomasYPos);
+			thomasTransform.setToTranslation(widthOfScreen / 3, heightOfScreen - 420 + thomasYOffset);
 			g2.setTransform(thomasTransform);
 			if (isGoingLeft || lastWayFacing == true)
 			{
@@ -227,7 +228,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		thomasTransform.setToTranslation(0, thomasYPos);
+		thomasTransform.setToTranslation(0, thomasYOffset);
 		if (isGoingLeft == true)
 		{
 			if (e.getSource() == animationTicker)
@@ -270,13 +271,13 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			{
 				if (g2 != null)
 				{
-					thomasYPos += jumpingVelocity;
+					thomasYOffset += jumpingVelocity;
 					jumpingVelocity += gravityAcceleration;
 				}
-				if (thomasYPos > 0)
+				if (thomasYOffset > 0)
 				{
 					jumpingVelocity = initialJumpingVelocity;
-					thomasYPos = 0;
+					thomasYOffset = 0;
 					isJumping = false;
 				}
 				repaint();
