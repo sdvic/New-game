@@ -16,7 +16,7 @@ import static javax.imageio.ImageIO.read;
 //TODO: MAKE THE TRACKS APPEAR IN THEIR CORRECT PLACES
 
 /***********************************************************************************************
- * David Frieder's Thomas Game Copyright 2018 David Frieder 3/29/2018 rev 2.0
+ * David Frieder's Thomas Game Copyright 2018 David Frieder 4/28/2018 rev 2.1
  * Upper track/Thomas collision working
  ***********************************************************************************************/
 public class ThomasShootEmUpController extends JComponent implements ActionListener, Runnable, KeyListener
@@ -68,6 +68,9 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private boolean lastWayFacing = true;
 	private Area areaA;
 	private Area areaB;
+	
+	//TODO give the ground and/or lower track tiles the same property as the upper track tiles, and change the jumping rules so that he falls as long as the box doesn't
+	// intersect the tracks
 
 	/***********************************************************************************************
 	 * Main
@@ -203,7 +206,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 				thomasBox = new Rectangle(0, 0, thomasBoxWidth, thomasBoxHeight);
 				thomasShape = thomasBox.getBounds();
 				g2.setColor(Color.green);
-				g2.draw(thomasShape);
+//				g2.draw(thomasShape);
 			}
 			if (isGoingRight || lastWayFacing == false)
 			{
@@ -214,7 +217,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 				thomasBox = new Rectangle(0, 0, thomasBoxWidth, thomasBoxHeight);
 				thomasShape = thomasBox.getBounds();
 				g2.setColor(Color.green);
-				g2.draw(thomasShape);
+//				g2.draw(thomasShape);
 			}
 		} catch (Exception ex)
 		{
