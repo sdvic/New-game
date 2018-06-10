@@ -281,7 +281,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		}
 		if (isJumping == true)
 		{
-			jump(e);
+//			jump(e);
 		}
 	}
 
