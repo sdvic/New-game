@@ -72,7 +72,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private Area areaA;
 	private Area areaB;
 
-	// TODO give the ground and/or lower track tiles the same property as the
+	// TODO give the ground test and/or lower track tiles the same property as the
 	// upper track tiles, and change the jumping rules so that he falls as long
 	// as the box doesn't
 	// intersect the tracks
