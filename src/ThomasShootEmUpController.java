@@ -14,8 +14,9 @@ import java.net.URL;
 import static javax.imageio.ImageIO.read;
 
 /***********************************************************************************************
- * David Frieder's Thomas Game Copyright 2018 David Frieder 4/28/2018 rev 2.1
- * Upper track/Thomas collision working
+ * David Frieder's Thomas Game Copyright 2018 David Frieder 6/13/2018 rev 2.3
+ * Having trouble making the falling mechanic work correctly
+ * Fixed Thomas' Jumping
  ***********************************************************************************************/
 public class ThomasShootEmUpController extends JComponent implements ActionListener, Runnable, KeyListener
 {
@@ -59,8 +60,10 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private boolean isGoingLeft;
 	private boolean isNotMoving;
 	private boolean isJumping;
+	private boolean isFalling;
 	private int thomasMaxSpeed = 13;
 	private int initialJumpingVelocity = -31;
+	private int initialFallingVelocity = 0;
 	public int jumpingVelocity = initialJumpingVelocity;
 	private int movingVelocity;
 	private int gravityAcceleration = 1;
@@ -113,20 +116,14 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		{
 			if (jumpingVelocity > 0 && thomasYOffsetFromGround < upperTrackYPos) //Checks if Thomas is falling or jumping, and then makes him able to land on the tracks if he is falling down.
 			{
-				thomasYOffsetFromGround = -7 * upperTrackYPos - thomasBoxHeight;
 				jumpingVelocity = initialJumpingVelocity;
 				isJumping = false;
 				g2.setTransform(thomasTransform);
-				System.out.println(upperTrackYPos);//TODO FIND OUT WHAT UPPER TRACK Y OFFSET GETS ITS NUMBERS FROM
 			}
 
 		}
 		if (testIntersection(thomasShape, upperTrackShape) == false && testIntersection(thomasShape, lowerTrackShape) == false)//TODO: make lower tracks a shape
 		{
-			{
-				thomasYOffsetFromGround += jumpingVelocity;
-				jumpingVelocity += gravityAcceleration;
-			}
 			if (thomasYOffsetFromGround > 0)
 			{
 				jumpingVelocity = initialJumpingVelocity;
@@ -160,7 +157,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		g2.setTransform(backgroundTx);//this is an identity transform
 		g2.translate(0, heightOfScreen / 2); // center in screen
 		g2.scale(1.5, 1.5);
-		upperTrackYPos = (int) g2.getTransform().getTranslateY();
+		upperTrackYPos = (int) g2.getTransform().getTranslateY(); //this is where upperTrackYPos gets its value from
 		for (int i = 0; i < 2; i++) // fits track images to screen width
 		{
 			g2.drawImage(trackImage, 0, 0, null);
@@ -180,12 +177,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		g2.setTransform(backgroundTx);
 		g2.translate(-widthOfScreen, heightOfScreen - 200);
 		g2.scale(1.5, 1.5);
-		for (int i = 0; i < (2 * (widthOfScreen / trackImage.getWidth(null))) + 2; i++) // fits
-																						// track
-																						// images
-																						// to
-																						// screen
-																						// width
+		for (int i = 0; i < (2 * (widthOfScreen / trackImage.getWidth(null))) + 2; i++) // fits track images to screen width
 		{
 			g2.drawImage(trackImage, 0, 0, null);
 			g2.translate(trackImage.getWidth(null), 0);
@@ -195,7 +187,6 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			lowerTrackShape = lowerTrackBox2.getBounds();
 			lowerTrackTransform = g2.getTransform();
 		}
-
 	}
 
 	/***********************************************************************************************
@@ -281,7 +272,11 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		}
 		if (isJumping == true)
 		{
-//			jump(e);
+			jump(e);
+		}
+		if (isFalling == true)
+		{
+			fall(e);
 		}
 	}
 
@@ -299,6 +294,24 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 				jumpingVelocity = initialJumpingVelocity;
 				thomasYOffsetFromGround = 0;
 				isJumping = false;
+			}
+			repaint();
+		}
+	}
+	public void fall(ActionEvent e)
+	{
+		if (e.getSource() == jumpingTicker)
+		{
+			if (g2 != null)
+			{
+				thomasYOffsetFromGround += jumpingVelocity;
+				jumpingVelocity += gravityAcceleration;
+			}
+			if (thomasYOffsetFromGround > 0)
+			{
+				jumpingVelocity = initialFallingVelocity;
+				thomasYOffsetFromGround = 0;
+				isFalling = false;
 			}
 			repaint();
 		}
