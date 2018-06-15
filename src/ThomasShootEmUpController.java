@@ -14,8 +14,8 @@ import java.net.URL;
 import static javax.imageio.ImageIO.read;
 
 /***********************************************************************************************
- * David Frieder's Thomas Game Copyright 2018 David Frieder 6/15/2018 rev 2.4
- * Falling mechanic started working, but needs some changes
+ * David Frieder's Thomas Game Copyright 2018 David Frieder 6/15/2018 rev 2.5
+ * Falling mechanic is finally working
  * Fixed Thomas' Jumping
  ***********************************************************************************************/
 public class ThomasShootEmUpController extends JComponent implements ActionListener, Runnable, KeyListener
@@ -277,7 +277,6 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		if (isFalling == true)
 		{
 			fall(e);
-			System.out.println("falling");
 		}
 	}
 
@@ -302,14 +301,14 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	}
 	public void fall(ActionEvent e)
 	{
-		if (e.getSource() == jumpingTicker)
+		if (e.getSource() == jumpingTicker && !isJumping)
 		{
 			if (g2 != null)
 			{
 				thomasYOffsetFromGround += fallingVelocity;
 				fallingVelocity += gravityAcceleration;
 			}
-			if ((thomasYOffsetFromGround > 0 || testIntersection(thomasShape, upperTrackShape)) && !isJumping)
+			if ((thomasYOffsetFromGround > 0 || testIntersection(thomasShape, upperTrackShape)) )
 			{
 				fallingVelocity = initialFallingVelocity;
 				thomasYOffsetFromGround = 0;
