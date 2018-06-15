@@ -14,8 +14,8 @@ import java.net.URL;
 import static javax.imageio.ImageIO.read;
 
 /***********************************************************************************************
- * David Frieder's Thomas Game Copyright 2018 David Frieder 6/13/2018 rev 2.3
- * Having trouble making the falling mechanic work correctly
+ * David Frieder's Thomas Game Copyright 2018 David Frieder 6/15/2018 rev 2.4
+ * Falling mechanic started working, but needs some changes
  * Fixed Thomas' Jumping
  ***********************************************************************************************/
 public class ThomasShootEmUpController extends JComponent implements ActionListener, Runnable, KeyListener
@@ -49,7 +49,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private AffineTransform backgroundTx = new AffineTransform();
 	private AffineTransform upperTrackTransform = new AffineTransform();
 	private Timer animationTicker = new Timer(40, this);
-	private Timer jumpingTicker = new Timer(1000 / 60, this);
+	private Timer jumpingTicker = new Timer(800 / 60, this);
 	private Image thomasSpriteImage;
 	private Image reverseThomasImage;
 	private int thomasSpriteImageCounter;
@@ -65,6 +65,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private int initialJumpingVelocity = -31;
 	private int initialFallingVelocity = 0;
 	public int jumpingVelocity = initialJumpingVelocity;
+	public int fallingVelocity = initialFallingVelocity;
 	private int movingVelocity;
 	private int gravityAcceleration = 1;
 	private Graphics2D g2;
@@ -75,10 +76,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	private Area areaA;
 	private Area areaB;
 
-	// TODO give the ground and/or lower track tiles the same property as the
-	// upper track tiles, and change the jumping rules so that he falls as long
-	// as the box doesn't
-	// intersect the tracks
+	// TODO give the ground and/or lower track tiles the same property as the upper track tiles, and change the jumping rules so that he falls as long as the box doesn't intersect the tracks
 
 	/***********************************************************************************************
 	 * Main
@@ -118,17 +116,19 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			{
 				jumpingVelocity = initialJumpingVelocity;
 				isJumping = false;
+				isFalling = false;
 				g2.setTransform(thomasTransform);
 			}
-
 		}
 		if (testIntersection(thomasShape, upperTrackShape) == false && testIntersection(thomasShape, lowerTrackShape) == false)//TODO: make lower tracks a shape
 		{
+			isFalling = true;
 			if (thomasYOffsetFromGround > 0)
 			{
 				jumpingVelocity = initialJumpingVelocity;
 				thomasYOffsetFromGround = 0;
 				isJumping = false;
+				
 			}
 			repaint();
 		}
@@ -277,6 +277,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		if (isFalling == true)
 		{
 			fall(e);
+			System.out.println("falling");
 		}
 	}
 
@@ -294,6 +295,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 				jumpingVelocity = initialJumpingVelocity;
 				thomasYOffsetFromGround = 0;
 				isJumping = false;
+				isFalling = false;
 			}
 			repaint();
 		}
@@ -304,15 +306,17 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		{
 			if (g2 != null)
 			{
-				thomasYOffsetFromGround += jumpingVelocity;
-				jumpingVelocity += gravityAcceleration;
+				thomasYOffsetFromGround += fallingVelocity;
+				fallingVelocity += gravityAcceleration;
 			}
-			if (thomasYOffsetFromGround > 0)
+			if ((thomasYOffsetFromGround > 0 || testIntersection(thomasShape, upperTrackShape)) && !isJumping)
 			{
-				jumpingVelocity = initialFallingVelocity;
+				fallingVelocity = initialFallingVelocity;
 				thomasYOffsetFromGround = 0;
 				isFalling = false;
+				isJumping = false;
 			}
+			isFalling = false;
 			repaint();
 		}
 	}
