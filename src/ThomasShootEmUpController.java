@@ -92,6 +92,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	@Override
 	public void run()
 	{
+		Thomas thomas = new Thomas();
 		loadImages();
 		setUpMainGameWindow();
 		thomasThemeSong.loop();
@@ -104,8 +105,8 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	 ***********************************************************************************************/
 	public void paint(Graphics g)
 	{
-		repaint();
 		g2 = (Graphics2D) g;
+		thomas
 		drawThomas();
 		drawRoad();// ........................ Draw Road
 		drawUpperTracks();// ................. Draw Upper Tracks
@@ -233,6 +234,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
+		repaint();
 		thomasTransform.setToTranslation(0, thomasYOffsetFromGround);
 		if (isGoingLeft == true)
 		{
