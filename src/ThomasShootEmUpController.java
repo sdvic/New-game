@@ -14,9 +14,8 @@ import java.net.URL;
 import static javax.imageio.ImageIO.read;
 
 /***********************************************************************************************
- * David Frieder's Thomas Game Copyright 2018 David Frieder 6/15/2018 rev 2.5
- * Falling mechanic is finally working
- * Fixed Thomas' Jumping
+ * David Frieder's Thomas Game Copyright 2018 David Frieder 6/16/2018 rev 2.6
+ * Made a Thomas class
  ***********************************************************************************************/
 public class ThomasShootEmUpController extends JComponent implements ActionListener, Runnable, KeyListener
 {
@@ -106,7 +105,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	public void paint(Graphics g)
 	{
 		g2 = (Graphics2D) g;
-		thomas
+//		thomas
 		drawThomas();
 		drawRoad();// ........................ Draw Road
 		drawUpperTracks();// ................. Draw Upper Tracks
