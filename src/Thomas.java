@@ -22,7 +22,6 @@ public class Thomas
 
 	public Thomas()
 	{
-		System.out.println("thomas is REAL");
 	}
 	private void paintSelf(Graphics2D g2)
 	{
