@@ -11,6 +11,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/***********************************************************************************************
+ * David Frieder's Saurian flash cards Copyright 2018 David Frieder 7/30/2018 rev 1.0
+ * uses background colors to signify right and wrong answers
+ ***********************************************************************************************/
 public class FlashCards implements KeyListener
 {
 
@@ -47,7 +51,7 @@ public class FlashCards implements KeyListener
 		letterPanel.add(textArea);
 		textArea.setFont(new Font("Bank Gothic", Font.BOLD, 372));
 		letterFrame.addKeyListener(this);
-		letterFrame.setBackground(Color.green);
+		
 	}
 	public void letterReset(JPanel letterPanel, char enlgishLetter, JLabel textArea)
 	{
@@ -65,11 +69,13 @@ public class FlashCards implements KeyListener
 	{
 		if(e.getKeyChar() == (saurianUpperCaseAlphabet.charAt(cardPicker)) || e.getKeyChar() == (saurianLowerCaseAlphabet.charAt(cardPicker)))
 				{
-			System.out.println("Correct");
+//			System.out.println("Correct");
+			letterPanel.setBackground(Color.green);
 			letterReset(letterPanel, enlgishLetter, textArea);
 			}
 		else{
-			System.out.println("wrong");
+//			System.out.println("wrong");
+			letterPanel.setBackground(Color.red);
 		}
 
 	}
