@@ -6,6 +6,7 @@ import java.awt.Paint;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,6 +20,9 @@ public class FlashCards implements KeyListener
 	public static String saurianLowerCaseAlphabet = new String("urstovwxazbcmdefghjkilnp0q");
 	public JFrame letterFrame;
 	public JFrame rectangleFrame = new JFrame();
+	public char enlgishLetter;
+	public JLabel textArea = new JLabel();
+	public JPanel letterPanel = new JPanel();
 	
 	public static void main(String[] args)
 	{
@@ -26,19 +30,15 @@ public class FlashCards implements KeyListener
 	}
 	public void getGoing()
 	{
-		rectangleFrame.setSize(600, 500);
-		rectangleFrame.setVisible(true);
 		cardPicker = (int) (Math.random() * 26);
 		letterFrame = new JFrame("Saurian Flashcards");
-		JPanel letterPanel = new JPanel();
+		enlgishLetter = (englishAlphabet.charAt(cardPicker));
 		letterFrame.add(letterPanel);
 		letterFrame.setSize(600, 500);
 		letterPanel.setSize(600, 500);
 		letterFrame.setVisible(true);
 		letterFrame.setDefaultCloseOperation(letterFrame.EXIT_ON_CLOSE);
-		char enlgishLetter = (englishAlphabet.charAt(cardPicker));
 		JLabel instructionsArea = new JLabel();
-		JLabel textArea = new JLabel();
 		letterPanel.add(instructionsArea);
 		letterPanel.add(textArea);
 		letterFrame.setLayout(new BorderLayout());
@@ -49,7 +49,14 @@ public class FlashCards implements KeyListener
 		letterFrame.addKeyListener(this);
 		letterFrame.setBackground(Color.green);
 	}
-	public void Paint(Graphics2D g2)
+	public void letterReset(JPanel letterPanel, char enlgishLetter, JLabel textArea)
+	{
+		cardPicker = (int) (Math.random() * 26);
+		enlgishLetter = (englishAlphabet.charAt(cardPicker));
+		textArea.setText("" + enlgishLetter);
+		letterPanel.add(textArea);
+	}
+	public void paint(Graphics2D g2)
 	{
 		rectangleFrame.paint(g2);
 	}
@@ -59,8 +66,7 @@ public class FlashCards implements KeyListener
 		if(e.getKeyChar() == (saurianUpperCaseAlphabet.charAt(cardPicker)) || e.getKeyChar() == (saurianLowerCaseAlphabet.charAt(cardPicker)))
 				{
 			System.out.println("Correct");
-			
-			getGoing();
+			letterReset(letterPanel, enlgishLetter, textArea);
 			}
 		else{
 			System.out.println("wrong");
