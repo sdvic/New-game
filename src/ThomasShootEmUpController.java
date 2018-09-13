@@ -14,8 +14,8 @@ import java.net.URL;
 import static javax.imageio.ImageIO.read;
 
 /***********************************************************************************************
- * David Frieder's Thomas Game Copyright 2018 David Frieder 6/18/2018 rev 2.7
- * Made a Thomas class
+ * David Frieder's Thomas Game Copyright 2018 David Frieder 9/12/2018 rev 2.9
+ * Trying to consolidate track methods
  ***********************************************************************************************/
 public class ThomasShootEmUpController extends JComponent implements ActionListener, Runnable, KeyListener
 {
@@ -112,32 +112,9 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 		drawRoad();// ........................ Draw Road
 		drawUpperTracks();// ................. Draw Upper Tracks
 		drawLowerTracks();// ................. Draw Lower Tracks
-		if (testIntersection(thomasShape, upperTrackShape)) // Check if Thomas'
-															// sprite intersects
-															// the upper tracks
+		if (testIntersection(thomasShape, upperTrackShape)) // Check if Thomas' sprite intersects with the upper tracks
 		{
-			if (jumpingVelocity > 0 && thomasYOffsetFromGround < upperTrackYPos) // Checks
-																					// if
-																					// Thomas
-																					// is
-																					// falling
-																					// or
-																					// jumping,
-																					// and
-																					// then
-																					// makes
-																					// him
-																					// able
-																					// to
-																					// land
-																					// on
-																					// the
-																					// tracks
-																					// if
-																					// he
-																					// is
-																					// falling
-																					// down.
+			if (jumpingVelocity > 0 && thomasYOffsetFromGround < upperTrackYPos) // Checks if Thomas is falling or jumping, and then makes him able to land on the tracks if he is falling.
 			{
 				jumpingVelocity = initialJumpingVelocity;
 				isJumping = false;
@@ -145,12 +122,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 				g2.setTransform(thomasTransform);
 			}
 		}
-		if (testIntersection(thomasShape, upperTrackShape) == false && testIntersection(thomasShape, lowerTrackShape) == false)// TODO:
-																																// make
-																																// lower
-																																// tracks
-																																// a
-																																// shape
+		else if (testIntersection(thomasShape, upperTrackShape) == false && testIntersection(thomasShape, lowerTrackShape) == false)// TODO: make lower tracks a shape
 		{
 			isFalling = true;
 			if (thomasYOffsetFromGround > 0)
@@ -158,7 +130,6 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 				jumpingVelocity = initialJumpingVelocity;
 				thomasYOffsetFromGround = 0;
 				isJumping = false;
-
 			}
 			repaint();
 		}
@@ -178,21 +149,36 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			g2.translate(roadImage.getWidth(null), 0);
 		}
 	}
+	/***********************************************************************************************
+	 * Track drawing experiment
+	 ***********************************************************************************************/
+	private void drawExperimentalTracks()
+	{
+		g2.setTransform(backgroundTx);// this is an identity transform
+		g2.translate(0, heightOfScreen / 2); // center in screen
+		g2.scale(1.5, 1.5);
+		upperTrackYPos = (int) g2.getTransform().getTranslateY(); // TrackYPos 
+		for (int i = 0; i < 2; i++) // fits track images to screen width
+		{
+			g2.drawImage(trackImage, 0, 0, null);
+			g2.translate(trackImage.getWidth(null), 0);
+			upperTrackWidth = trackImage.getWidth(null);
+		}
+		upperTrackBox2 = new Rectangle(-2 * upperTrackWidth, 0, 2 * upperTrackWidth, upperTrackYPos);
+		upperTrackShape = upperTrackBox2.getBounds();
+		upperTrackTransform = g2.getTransform();
+	}
 
 	/***********************************************************************************************
 	 * Draw upper tracks
 	 ***********************************************************************************************/
 	private void drawUpperTracks()
 	{
+		System.out.println(trackWidth + " higher");
 		g2.setTransform(backgroundTx);// this is an identity transform
 		g2.translate(0, heightOfScreen / 2); // center in screen
 		g2.scale(1.5, 1.5);
-		upperTrackYPos = (int) g2.getTransform().getTranslateY(); // this is
-																	// where
-																	// upperTrackYPos
-																	// gets its
-																	// value
-																	// from
+		upperTrackYPos = (int) g2.getTransform().getTranslateY(); // Upper track YPos
 		for (int i = 0; i < 2; i++) // fits track images to screen width
 		{
 			g2.drawImage(trackImage, 0, 0, null);
@@ -208,22 +194,16 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 	 * Draw lower tracks
 	 ***********************************************************************************************/
 	private void drawLowerTracks()
-	{
+	{ System.out.println(trackWidth + " lower");
 		g2.setTransform(backgroundTx);
 		g2.translate(-widthOfScreen, heightOfScreen - 200);
 		g2.scale(1.5, 1.5);
-		for (int i = 0; i < (2 * (widthOfScreen / trackImage.getWidth(null))) + 2; i++) // fits
-																						// track
-																						// images
-																						// to
-																						// screen
-																						// width
+		for (int i = 0; i < (2 * (widthOfScreen / trackImage.getWidth(null))) + 2; i++) //screen width
 		{
 			g2.drawImage(trackImage, 0, 0, null);
 			g2.translate(trackImage.getWidth(null), 0);
-			lowerTrackWidth = trackImage.getWidth(null);
 			lowerTrackYPos = trackImage.getHeight(null);
-			lowerTrackBox2 = new Rectangle(-2 * lowerTrackWidth, 0, 2 * lowerTrackWidth, lowerTrackYPos);
+			lowerTrackBox2 = new Rectangle(-2 * trackWidth, 0, 2 * trackWidth, lowerTrackYPos);
 			lowerTrackShape = lowerTrackBox2.getBounds();
 			lowerTrackTransform = g2.getTransform();
 		}
@@ -444,16 +424,16 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
 			System.out.println("error reading from thomas sprite array");
 		}
 		roadImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("ground.png"));
-
 		trackImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("Tracks.png"));
 		roadWidth = roadImage.getWidth(null);
-		trackWidth = roadImage.getWidth(null);
+		trackWidth = trackImage.getWidth(null);
+		System.out.println(trackWidth + "");
 	}
 
 	/***********************************************************************************************
 	 * Set up main JFrame
 	 ***********************************************************************************************/
-	private void setUpMainGameWindow()
+	private void setUpMainGameWindow() 
 	{
 		mainGameWindow.setTitle("Thomas the tank");
 		mainGameWindow.setSize(widthOfScreen, heightOfScreen);
