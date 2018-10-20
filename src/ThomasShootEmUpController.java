@@ -11,8 +11,8 @@ import java.net.URL;
 import static javax.imageio.ImageIO.read;
 
 /***********************************************************************************************
- * David Frieder's Thomas Game Copyright 2018 David Frieder 10/16/2018 rev 3.3
- * Clean up...adding bounding boxes vic 10/18/2018
+ * David Frieder's Thomas Game Copyright 2018 David Frieder 10/16/2018 rev 3.4
+ * Refactoring vic 10/18/2018
  ***********************************************************************************************/
 public class ThomasShootEmUpController extends JComponent implements ActionListener, Runnable, KeyListener
 {
@@ -20,7 +20,6 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
     private Shape upperTrackShape;
     private int thomasBoxWidth;
     private int thomasBoxHeight;
-    private  Rectangle thomasBoundingBox;
     private Shape thomasShape;
     private int widthOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
     private int heightOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
@@ -45,16 +44,14 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
     private int movingVelocity;
     private int gravityAcceleration = 1;
     private Graphics2D g2;
-    private Image roadImage;
-    private Image trackImage;
     private int thomasYOffsetFromGround = 0;
     private boolean lastWayFacing = true;
     private Point thomasHomePosition = new Point(widthOfScreen / 3, 705*heightOfScreen/1000);
     private URL thomasThemeAddress = getClass().getResource("ThomasThemeSong.wav");
     private AudioClip thomasThemeSong = JApplet.newAudioClip(thomasThemeAddress);
-    private Image[] thomasSpriteImageArray = new Image[8];
-    private Image[] reverseThomasImageArray = new Image[8];
-    Thomas thomas = new Thomas();
+    private Thomas thomas = new Thomas();
+    private Track track = new Track();
+    private Road road = new Road();
 
 
     /***********************************************************************************************
@@ -71,20 +68,10 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
     @Override
     public void run()
     {
-        loadImages();
         setUpMainGameWindow();
 //        thomasThemeSong.loop();
         animationTicker.start();
         jumpingTicker.start();
-    }
-
-    /***********************************************************************************************
-     * Get .png files, convert to Image and load sprite array
-     ***********************************************************************************************/
-    private void loadImages()
-    {
-        roadImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("ground.png"));
-        trackImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("Tracks.png"));
     }
 
     /***********************************************************************************************
@@ -98,7 +85,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
         g2.setTransform(backgroundTx);
         drawRoad();
         drawObstacle();
-        drawTracks(0, 842 * heightOfScreen / 1000, 1 + widthOfScreen/trackImage.getWidth(null));//Lower track
+        drawTracks(0, 842 * heightOfScreen / 1000, 6);//Lower track
         drawTracks(0, 500 * heightOfScreen / 1000, 2);//Upper track
 //        if (testIntersection(thomasShape, upperTrackShape))
 //        {
@@ -135,6 +122,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
     private void drawRoad()
     {
         g2.setTransform(backgroundTx);
+        Image roadImage = road.getRoadImage();
         int roadImageWidth = roadImage.getWidth(null);
         for (int i = 0; i < 1 + widthOfScreen/roadImageWidth; i++)
         {
@@ -148,7 +136,9 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
     private void drawTracks(int trackXPos, int trackYPos, int trackSections)
     {
         g2.setTransform(backgroundTx);
+        Image trackImage = track.getTrackImage();
         int trackImageWidth = trackImage.getWidth(null);
+
         for (int i = 0; i < trackSections; i++)
         {
             g2.drawImage(trackImage, i * trackImageWidth, trackYPos, null);
@@ -168,7 +158,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
             thomasSpriteImageCounter = thomasSpriteImageCounter % 8;
             thomasSpriteImage = image[thomasSpriteImageCounter];
             reverseThomasImage = reverseImage[thomasSpriteImageCounter];
-            thomasBoundingBox = new Rectangle(0, 0, thomasBoxWidth, thomasBoxHeight);
+            Rectangle2D.Double thomasBoundingBox = new Rectangle2D.Double(0, 0, thomasBoxWidth, thomasBoxHeight);
             thomasShape = thomasBoundingBox.getBounds();
             g2.setColor(Color.GREEN);
             thomasBoundingBox.x = thomasHomePosition.x;
