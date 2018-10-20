@@ -42,9 +42,6 @@ public class Thomas
         {
             e.printStackTrace();
         }
-//        int thomasBoundingBoxWidth = thomasImage.getWidth(null);
-//        int thomasBoundingBoxHeight = thomasImage.getHeight(null);
-//        Rectangle2D.Double thomasBoundingBox = new Rectangle2D.Double();
     }
 
     public Image[] getReverseThomasImageArray()
