@@ -8,7 +8,6 @@ import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.net.URL;
-import static javax.imageio.ImageIO.read;
 
 /***********************************************************************************************
  * David Frieder's Thomas Game Copyright 2018 David Frieder 10/16/2018 rev 3.4
@@ -26,14 +25,9 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
     private JFrame mainGameWindow = new JFrame("NewGame");// Makes window with
     private AffineTransform identityTx = new AffineTransform();
     private AffineTransform backgroundTx = new AffineTransform();
-    private AffineTransform upperTrackTransform = new AffineTransform();
     private Timer animationTicker = new Timer(40, this);
     private Timer jumpingTicker = new Timer(800 / 60, this);
     private Image thomasSpriteImage;
-    private Image reverseThomasImage;
-    private int thomasSpriteImageCounter;
-    private int groundLevelTrackYPos = (int) (heightOfScreen * 0.809);
-    private int level2TrackYPos = (int) (heightOfScreen * 0.2);
     private boolean isGoingLeft;
     private boolean isJumping;
     private boolean isFalling;
@@ -71,7 +65,20 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
         setUpMainGameWindow();
 //        thomasThemeSong.loop();
         animationTicker.start();
-        jumpingTicker.start();
+        //jumpingTicker.start();
+    }
+    /***********************************************************************************************
+     * Set up main JFrame
+     ***********************************************************************************************/
+    private void setUpMainGameWindow()
+    {
+        mainGameWindow.setTitle("Thomas the tank");
+        mainGameWindow.setSize(widthOfScreen, heightOfScreen);
+        mainGameWindow.add(this);// Adds the paint method to the JFrame
+        mainGameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainGameWindow.getContentPane().setBackground(new Color(200, 235, 255));
+        mainGameWindow.setVisible(true);
+        mainGameWindow.addKeyListener(this);
     }
 
     /***********************************************************************************************
@@ -138,7 +145,9 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
         g2.setTransform(backgroundTx);
         Image trackImage = track.getTrackImage();
         int trackImageWidth = trackImage.getWidth(null);
-
+        Rectangle2D.Double trackBoundingBox = new Rectangle2D.Double(0, 0, track.getTrackImage().getWidth(null), track.trackImage.getHeight(null));
+        g2.setColor(Color.GREEN);
+        g2.draw(trackBoundingBox);
         for (int i = 0; i < trackSections; i++)
         {
             g2.drawImage(trackImage, i * trackImageWidth, trackYPos, null);
@@ -146,18 +155,15 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
     }
 
     /***********************************************************************************************
-     * Draw Thomas with sprite files
+     * Draw Thomas
      ***********************************************************************************************/
     public void drawThomas()
     {
         g2.setTransform(identityTx);
         try
         {
-            Image[] image = thomas.getThomasSpriteImageArray();
-            Image[] reverseImage = thomas.getReverseThomasImageArray();
-            thomasSpriteImageCounter = thomasSpriteImageCounter % 8;
-            thomasSpriteImage = image[thomasSpriteImageCounter];
-            reverseThomasImage = reverseImage[thomasSpriteImageCounter];
+            //Image[] image = thomas.getThomasSpriteImageArray();
+            //Image[] reverseImage = thomas.getReverseThomasImageArray();
             Rectangle2D.Double thomasBoundingBox = new Rectangle2D.Double(0, 0, thomasBoxWidth, thomasBoxHeight);
             thomasShape = thomasBoundingBox.getBounds();
             g2.setColor(Color.GREEN);
@@ -166,16 +172,18 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
             thomas.setThomasXpos(thomasHomePosition.x);
             thomas.setThomasYpos(thomasHomePosition.y);
             g2.draw(thomasBoundingBox);
-            if (isGoingLeft || lastWayFacing == true)
+            if (isGoingLeft || lastWayFacing == true)// Thomas going left
             {
+                thomasSpriteImage = thomas.nextThomasSpriteImage(false);
                 g2.drawImage(thomasSpriteImage, thomasHomePosition.x, thomasHomePosition.y, null);
                 lastWayFacing = true;
                 thomasBoxWidth = thomasSpriteImage.getWidth(null);
                 thomasBoxHeight = thomasSpriteImage.getHeight(null);
             }
-            if (isGoingRight || lastWayFacing == false)
+            if (isGoingRight || lastWayFacing == false)// Thomas going right
             {
-                g2.drawImage(reverseThomasImage, thomasHomePosition.x, thomasHomePosition.y, null);
+                thomasSpriteImage = thomas.nextThomasSpriteImage(true);
+                g2.drawImage(thomasSpriteImage, thomasHomePosition.x, thomasHomePosition.y, null);
                 lastWayFacing = false;
                 thomasBoxWidth = thomasSpriteImage.getWidth(null);
                 thomasBoxHeight = thomasSpriteImage.getHeight(null);
@@ -234,6 +242,18 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
     }
 
     /***********************************************************************************************
+     * Check for intersections
+     ***********************************************************************************************/
+    public boolean testIntersection(Shape shapeA, Shape shapeB)
+    {
+        if (shapeA.intersects(shapeB.getBounds2D()))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /***********************************************************************************************
      * Respond to key typed...Not being used
      ***********************************************************************************************/
     @Override
@@ -256,7 +276,6 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
         {
             isGoingLeft = true;
             isGoingRight = false;
-            animationTicker.start();
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT && e.getKeyCode() == KeyEvent.VK_RIGHT)
         {
@@ -278,44 +297,17 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) // going right
         {
             isGoingRight = false;
+            isGoingLeft = false;
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) // going left
         {
             isGoingLeft = false;
+            isGoingRight = false;
         }
         if (e.getKeyCode() == KeyEvent.VK_UP)
         {
         }
     }
-
-
-
-    /***********************************************************************************************
-     * Set up main JFrame
-     ***********************************************************************************************/
-    private void setUpMainGameWindow()
-    {
-        mainGameWindow.setTitle("Thomas the tank");
-        mainGameWindow.setSize(widthOfScreen, heightOfScreen);
-        mainGameWindow.add(this);// Adds the paint method to the JFrame
-        mainGameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainGameWindow.getContentPane().setBackground(new Color(200, 235, 255));
-        mainGameWindow.setVisible(true);
-        mainGameWindow.addKeyListener(this);
-    }
-
-    /***********************************************************************************************
-     * Check for intersections
-     ***********************************************************************************************/
-    public boolean testIntersection(Shape shapeA, Shape shapeB)
-    {
-        if (shapeA.intersects(shapeB.getBounds2D()))
-        {
-            return true;
-        }
-        return false;
-    }
-
     /***********************************************************************************************
      * Action Performed.....Respond to animation ticker and paint ticker
      ***********************************************************************************************/
@@ -326,18 +318,14 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
         {
             if (isGoingLeft == true)
             {
-                thomasSpriteImageCounter++;
+                thomasSpriteImage = thomas.nextThomasSpriteImage(!isGoingRight);
                 backgroundTx.setToTranslation(backgroundTx.getTranslateX() + 20, 0);
             }
             if (isGoingRight == true)
             {
-                thomasSpriteImageCounter++;
+                thomasSpriteImage = thomas.nextThomasSpriteImage(isGoingRight);
                 backgroundTx.setToTranslation(backgroundTx.getTranslateX() - 20, 0);
 
-            }
-            if (thomasSpriteImageCounter < 0)
-            {
-                thomasSpriteImageCounter = 7;
             }
         }
         if (isJumping == true)
