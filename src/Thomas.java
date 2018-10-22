@@ -14,12 +14,15 @@ public class Thomas
     private AffineTransform thomasTransform = new AffineTransform();
     private int thomasMaxSpeed = 13;
     private Graphics2D g2;
-    private Image thomasImage = thomasSpriteImageArray[0];
     private int thomasXpos;
     private int thomasYpos;
+    private int thomasSpriteImageCounter;
+    private Image thomasSpriteImage;
+    private Image reverseThomasImage;
 
     public Thomas()
     {
+        Rectangle2D.Double thomasBoundingBox = new Rectangle2D.Double(0, 0, thomasBoxWidth, thomasBoxHeight);
         try
         {
             thomasSpriteImageArray[0] = read(getClass().getResource("Thomas1.png"));
@@ -41,6 +44,21 @@ public class Thomas
         } catch (IOException e)
         {
             e.printStackTrace();
+        }
+    }
+
+    public Image nextThomasSpriteImage(boolean goingRight)
+    {
+        if (goingRight)
+        {
+            thomasSpriteImageCounter++;
+            thomasSpriteImageCounter = thomasSpriteImageCounter % 8;
+            return thomasSpriteImageArray[thomasSpriteImageCounter];
+        } else
+        {
+            thomasSpriteImageCounter++;
+            thomasSpriteImageCounter = thomasSpriteImageCounter % 8;
+            return reverseThomasImageArray[thomasSpriteImageCounter];
         }
     }
 

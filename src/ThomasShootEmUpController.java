@@ -15,6 +15,9 @@ import java.net.URL;
  ***********************************************************************************************/
 public class ThomasShootEmUpController extends JComponent implements ActionListener, Runnable, KeyListener
 {
+    private Thomas thomas = new Thomas();
+    private Track track = new Track();
+    private Road road = new Road();
     private boolean isGoingRight = false;
     private Shape upperTrackShape;
     private int thomasBoxWidth;
@@ -27,7 +30,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
     private AffineTransform backgroundTx = new AffineTransform();
     private Timer animationTicker = new Timer(40, this);
     private Timer jumpingTicker = new Timer(800 / 60, this);
-    private Image thomasSpriteImage;
+    private Image thomasSpriteImage = thomas.getThomasSpriteImageArray()[0];
     private boolean isGoingLeft;
     private boolean isJumping;
     private boolean isFalling;
@@ -43,9 +46,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
     private Point thomasHomePosition = new Point(widthOfScreen / 3, 705*heightOfScreen/1000);
     private URL thomasThemeAddress = getClass().getResource("ThomasThemeSong.wav");
     private AudioClip thomasThemeSong = JApplet.newAudioClip(thomasThemeAddress);
-    private Thomas thomas = new Thomas();
-    private Track track = new Track();
-    private Road road = new Road();
+
 
 
     /***********************************************************************************************
@@ -89,7 +90,6 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
         g2 = (Graphics2D) g;
         g2.setTransform(backgroundTx);
         drawThomas();
-        g2.setTransform(backgroundTx);
         drawRoad();
         drawObstacle();
         drawTracks(0, 842 * heightOfScreen / 1000, 6);//Lower track
@@ -162,8 +162,6 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
         g2.setTransform(identityTx);
         try
         {
-            //Image[] image = thomas.getThomasSpriteImageArray();
-            //Image[] reverseImage = thomas.getReverseThomasImageArray();
             Rectangle2D.Double thomasBoundingBox = new Rectangle2D.Double(0, 0, thomasBoxWidth, thomasBoxHeight);
             thomasShape = thomasBoundingBox.getBounds();
             g2.setColor(Color.GREEN);
@@ -172,7 +170,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
             thomas.setThomasXpos(thomasHomePosition.x);
             thomas.setThomasYpos(thomasHomePosition.y);
             g2.draw(thomasBoundingBox);
-            if (isGoingLeft || lastWayFacing == true)// Thomas going left
+            if (isGoingLeft)// Thomas going left
             {
                 thomasSpriteImage = thomas.nextThomasSpriteImage(false);
                 g2.drawImage(thomasSpriteImage, thomasHomePosition.x, thomasHomePosition.y, null);
@@ -180,7 +178,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
                 thomasBoxWidth = thomasSpriteImage.getWidth(null);
                 thomasBoxHeight = thomasSpriteImage.getHeight(null);
             }
-            if (isGoingRight || lastWayFacing == false)// Thomas going right
+            if (isGoingRight)// Thomas going right
             {
                 thomasSpriteImage = thomas.nextThomasSpriteImage(true);
                 g2.drawImage(thomasSpriteImage, thomasHomePosition.x, thomasHomePosition.y, null);
@@ -188,6 +186,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
                 thomasBoxWidth = thomasSpriteImage.getWidth(null);
                 thomasBoxHeight = thomasSpriteImage.getHeight(null);
             }
+
         } catch (Exception ex)
         {
             System.out.println("error reading thomas thomasSpriteImage from thomas sprite thomasSpriteImage array");
@@ -270,17 +269,10 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) // going right
         {
             isGoingRight = true;
-            isGoingLeft = false;
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) // going left
         {
             isGoingLeft = true;
-            isGoingRight = false;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT && e.getKeyCode() == KeyEvent.VK_RIGHT)
-        {
-            isGoingLeft = false;
-            isGoingRight = false;
         }
         if (e.getKeyCode() == KeyEvent.VK_UP)
         {
@@ -297,12 +289,10 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) // going right
         {
             isGoingRight = false;
-            isGoingLeft = false;
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) // going left
         {
             isGoingLeft = false;
-            isGoingRight = false;
         }
         if (e.getKeyCode() == KeyEvent.VK_UP)
         {
