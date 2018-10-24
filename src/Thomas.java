@@ -49,7 +49,7 @@ public class Thomas
 
     public Image nextThomasSpriteImage(boolean goingRight)
     {
-        if (goingRight)
+        if (!goingRight)
         {
             thomasSpriteImageCounter++;
             thomasSpriteImageCounter = thomasSpriteImageCounter % 8;

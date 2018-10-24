@@ -10,15 +10,15 @@ import java.awt.geom.Rectangle2D;
 import java.net.URL;
 
 /***********************************************************************************************
- * David Frieder's Thomas Game Copyright 2018 David Frieder 10/16/2018 rev 3.4
- * Refactoring vic 10/18/2018
+ * David Frieder's Thomas Game Copyright 2018 David Frieder 10/16/2018 rev 3.5
+ * Refactoring vic 10/22/2018
  ***********************************************************************************************/
 public class ThomasShootEmUpController extends JComponent implements ActionListener, Runnable, KeyListener
 {
     private Thomas thomas = new Thomas();
     private Track track = new Track();
     private Road road = new Road();
-    private boolean isGoingRight = false;
+    private boolean isGoingRight;
     private Shape upperTrackShape;
     private int thomasBoxWidth;
     private int thomasBoxHeight;
@@ -170,6 +170,10 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
             thomas.setThomasXpos(thomasHomePosition.x);
             thomas.setThomasYpos(thomasHomePosition.y);
             g2.draw(thomasBoundingBox);
+            if (!isGoingLeft && !isGoingRight) // To show initial standing still Thomas
+            {
+                g2.drawImage(thomasSpriteImage, thomasHomePosition.x, thomasHomePosition.y, null);
+            }
             if (isGoingLeft)// Thomas going left
             {
                 thomasSpriteImage = thomas.nextThomasSpriteImage(false);
