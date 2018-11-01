@@ -105,7 +105,7 @@ public class Thomas
     {
         this.thomasHomePosition = thomasHomePosition;
     }
-    
+
 }
 
 
