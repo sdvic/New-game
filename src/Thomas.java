@@ -7,40 +7,44 @@ import static javax.imageio.ImageIO.read;
 
 public class Thomas
 {
-    int thomasBoxWidth;
-    int thomasBoxHeight;
-    private Image[] thomasSpriteImageArray = new Image[8];
-    private Image[] reverseThomasImageArray = new Image[8];
+    private int thomasBoundingBoxWidth;
+    private int thomasBoundingBoxHeight;
+    private Image[] forwardThomasSpriteImageArray = new Image[8];
+    private Image[] reverseThomasSpriteImageArray = new Image[8];
     private AffineTransform thomasTransform = new AffineTransform();
     private int thomasMaxSpeed = 13;
     private Graphics2D g2;
     private int thomasXpos;
     private int thomasYpos;
     private int thomasSpriteImageCounter;
-    private Image thomasSpriteImage;
-    private Image reverseThomasImage;
+    private Rectangle2D.Double thomasBoundingBox;
+    private Point thomasHomePosition;
 
-    public Thomas()
+
+    public Thomas(Point thomasHomePosition)
     {
-        Rectangle2D.Double thomasBoundingBox = new Rectangle2D.Double(0, 0, thomasBoxWidth, thomasBoxHeight);
         try
         {
-            thomasSpriteImageArray[0] = read(getClass().getResource("Thomas1.png"));
-            thomasSpriteImageArray[1] = read(getClass().getResource("Thomas2.png"));
-            thomasSpriteImageArray[2] = read(getClass().getResource("Thomas3.png"));
-            thomasSpriteImageArray[3] = read(getClass().getResource("Thomas4.png"));
-            thomasSpriteImageArray[4] = read(getClass().getResource("Thomas5.png"));
-            thomasSpriteImageArray[5] = read(getClass().getResource("Thomas6.png"));
-            thomasSpriteImageArray[6] = read(getClass().getResource("Thomas7.png"));
-            thomasSpriteImageArray[7] = read(getClass().getResource("Thomas8.png"));
-            reverseThomasImageArray[0] = read(getClass().getResource("Reversed Thomas1.png"));
-            reverseThomasImageArray[1] = read(getClass().getResource("Reversed Thomas2.png"));
-            reverseThomasImageArray[2] = read(getClass().getResource("Reversed Thomas3.png"));
-            reverseThomasImageArray[3] = read(getClass().getResource("Reversed Thomas4.png"));
-            reverseThomasImageArray[4] = read(getClass().getResource("Reversed Thomas5.png"));
-            reverseThomasImageArray[5] = read(getClass().getResource("Reversed Thomas6.png"));
-            reverseThomasImageArray[6] = read(getClass().getResource("Reversed Thomas7.png"));
-            reverseThomasImageArray[7] = read(getClass().getResource("Reversed Thomas8.png"));
+            forwardThomasSpriteImageArray[0] = read(getClass().getResource("Thomas1.png"));
+            forwardThomasSpriteImageArray[1] = read(getClass().getResource("Thomas2.png"));
+            forwardThomasSpriteImageArray[2] = read(getClass().getResource("Thomas3.png"));
+            forwardThomasSpriteImageArray[3] = read(getClass().getResource("Thomas4.png"));
+            forwardThomasSpriteImageArray[4] = read(getClass().getResource("Thomas5.png"));
+            forwardThomasSpriteImageArray[5] = read(getClass().getResource("Thomas6.png"));
+            forwardThomasSpriteImageArray[6] = read(getClass().getResource("Thomas7.png"));
+            forwardThomasSpriteImageArray[7] = read(getClass().getResource("Thomas8.png"));
+            reverseThomasSpriteImageArray[0] = read(getClass().getResource("Reversed Thomas1.png"));
+            reverseThomasSpriteImageArray[1] = read(getClass().getResource("Reversed Thomas2.png"));
+            reverseThomasSpriteImageArray[2] = read(getClass().getResource("Reversed Thomas3.png"));
+            reverseThomasSpriteImageArray[3] = read(getClass().getResource("Reversed Thomas4.png"));
+            reverseThomasSpriteImageArray[4] = read(getClass().getResource("Reversed Thomas5.png"));
+            reverseThomasSpriteImageArray[5] = read(getClass().getResource("Reversed Thomas6.png"));
+            reverseThomasSpriteImageArray[6] = read(getClass().getResource("Reversed Thomas7.png"));
+            reverseThomasSpriteImageArray[7] = read(getClass().getResource("Reversed Thomas8.png"));
+            thomasBoundingBoxWidth = forwardThomasSpriteImageArray[0].getWidth(null);
+            thomasBoundingBoxHeight = forwardThomasSpriteImageArray[0].getHeight(null);
+            this.thomasHomePosition = thomasHomePosition;
+            thomasBoundingBox = new Rectangle2D.Double(thomasHomePosition.x, thomasHomePosition.y, thomasBoundingBoxWidth, thomasBoundingBoxHeight);
         } catch (IOException e)
         {
             e.printStackTrace();
@@ -53,23 +57,23 @@ public class Thomas
         {
             thomasSpriteImageCounter++;
             thomasSpriteImageCounter = thomasSpriteImageCounter % 8;
-            return thomasSpriteImageArray[thomasSpriteImageCounter];
+            return forwardThomasSpriteImageArray[thomasSpriteImageCounter];
         } else
         {
             thomasSpriteImageCounter++;
             thomasSpriteImageCounter = thomasSpriteImageCounter % 8;
-            return reverseThomasImageArray[thomasSpriteImageCounter];
+            return reverseThomasSpriteImageArray[thomasSpriteImageCounter];
         }
     }
 
-    public Image[] getReverseThomasImageArray()
+    public Image[] getReverseThomasSpriteImageArray()
     {
-        return reverseThomasImageArray;
+        return reverseThomasSpriteImageArray;
     }
 
-    public Image[] getThomasSpriteImageArray()
+    public Image[] getForwardThomasSpriteImageArray()
     {
-        return thomasSpriteImageArray;
+        return forwardThomasSpriteImageArray;
     }
 
     public int getThomasXpos()
@@ -91,4 +95,17 @@ public class Thomas
     {
         this.thomasYpos = thomasYpos;
     }
+
+    public Rectangle2D.Double getThomasBoundingBox()
+    {
+        return thomasBoundingBox;
+    }
+
+    public void setThomasHomePosition(Point thomasHomePosition)
+    {
+        this.thomasHomePosition = thomasHomePosition;
+    }
+    
 }
+
+
