@@ -10,8 +10,8 @@ import java.awt.geom.Rectangle2D;
 import java.net.URL;
 
 /***********************************************************************************************
- * David Frieder's Thomas Game Copyright 2018 David Frieder 10/16/2018 rev 3.6
- * Refactoring vic 10/23/2018
+ * David Frieder's Thomas Game Copyright 2018 David Frieder 10/16/2018 rev 3.7
+ * Thomas Jumping vic 11/1/2018
  ***********************************************************************************************/
 public class ThomasShootEmUpController extends JComponent implements ActionListener, Runnable, KeyListener
 {
