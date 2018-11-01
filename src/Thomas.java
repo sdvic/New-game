@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
@@ -19,6 +21,7 @@ public class Thomas
     private int thomasSpriteImageCounter;
     private Rectangle2D.Double thomasBoundingBox;
     private Point thomasHomePosition;
+    private boolean isJumping = false;
 
 
     public Thomas(Point thomasHomePosition)
@@ -76,26 +79,6 @@ public class Thomas
         return forwardThomasSpriteImageArray;
     }
 
-    public int getThomasXpos()
-    {
-        return thomasXpos;
-    }
-
-    public void setThomasXpos(int thomasXpos)
-    {
-        this.thomasXpos = thomasXpos;
-    }
-
-    public int getThomasYpos()
-    {
-        return thomasYpos;
-    }
-
-    public void setThomasYpos(int thomasYpos)
-    {
-        this.thomasYpos = thomasYpos;
-    }
-
     public Rectangle2D.Double getThomasBoundingBox()
     {
         return thomasBoundingBox;
@@ -104,8 +87,15 @@ public class Thomas
     public void setThomasHomePosition(Point thomasHomePosition)
     {
         this.thomasHomePosition = thomasHomePosition;
+        thomasBoundingBox.x = thomasHomePosition.x;
+        thomasBoundingBox.y = thomasHomePosition.y;
     }
 
+
+    public Point getThomasHomePosition()
+    {
+        return thomasHomePosition;
+    }
 }
 
 
