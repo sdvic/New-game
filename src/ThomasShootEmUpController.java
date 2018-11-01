@@ -64,10 +64,11 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
     public void run()
     {
         setUpMainGameWindow();
+        thomas.setThomasHomePosition(thomasHomePosition);
         repaint();
 //        thomasThemeSong.loop();
         animationTicker.start();
-        //jumpingTicker.start();
+        jumpingTicker.start();
     }
 
     /***********************************************************************************************
@@ -82,10 +83,6 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
         mainGameWindow.getContentPane().setBackground(new Color(200, 235, 255));
         mainGameWindow.setVisible(true);
         mainGameWindow.addKeyListener(this);
-//        if (!isGoingLeft && !isGoingRight) // To show initial standing still Thomas
-//        {
-//            g2.drawImage(thomas.nextThomasSpriteImage(true), thomasHomePosition.x, thomasHomePosition.y, null);
-//        }
     }
 
     /***********************************************************************************************
@@ -177,18 +174,15 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
             if (isGoingLeft)// Thomas going left
             {
                 thomasSpriteImage = thomas.nextThomasSpriteImage(false);
-                g2.drawImage(thomasSpriteImage, thomasHomePosition.x, thomasHomePosition.y, null);
             }
             if (isGoingRight)// Thomas going right
             {
                 thomasSpriteImage = thomas.nextThomasSpriteImage(true);
-                g2.drawImage(thomasSpriteImage, thomasHomePosition.x, thomasHomePosition.y, null);
             }
-            if (!isGoingRight && !isGoingLeft)
+            if (!isGoingRight && !isGoingLeft) //Shows an image of Thomas when not moving
             {
-                g2.drawImage(thomasSpriteImage, thomasHomePosition.x, thomasHomePosition.y, null);
             }
-
+            g2.drawImage(thomasSpriteImage, thomas.getThomasHomePosition().x, thomas.getThomasHomePosition().y, null);
         } catch (Exception ex)
         {
             System.out.println("error reading thomas thomasSpriteImage from thomas sprite thomasSpriteImage array");
@@ -202,7 +196,6 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
     {
         if (e.getSource() == jumpingTicker)
         {
-            System.out.println("kkkkkkkkk");
             thomasYOffsetFromGround += jumpingVelocity;
             jumpingVelocity += gravityAcceleration;
             repaint();
@@ -312,11 +305,11 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
         }
         if (isJumping)
         {
-            jump(e);
+            thomas.setThomasHomePosition(new Point(thomas.getThomasHomePosition().x, thomas.getThomasHomePosition().y - 20));
         }
-        if (isFalling)
+        if (!isJumping && thomas.getThomasHomePosition().y < (heightOfScreen - 480))
         {
-            fall(e);
+            thomas.setThomasHomePosition(new Point(thomas.getThomasHomePosition().x, thomas.getThomasHomePosition().y + 20));
         }
         repaint();
     }

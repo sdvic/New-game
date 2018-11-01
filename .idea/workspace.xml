@@ -4,7 +4,6 @@
     <list default="true" id="bee6b247-4e15-4c90-aac2-f0ace281037e" name="Default Changelist" comment="Refactoring">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ThomasShootEmUpController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ThomasShootEmUpController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Track.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Track.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/bin/" />
@@ -18,7 +17,7 @@
     <session id="-1221345303">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="30" />
+          <entry key="project.closed" value="31" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.110" value="1" />
           <entry key="project.open.time.21" value="1" />
@@ -27,11 +26,11 @@
           <entry key="project.open.time.36" value="3" />
           <entry key="project.open.time.38" value="1" />
           <entry key="project.open.time.5" value="2" />
-          <entry key="project.open.time.6" value="9" />
+          <entry key="project.open.time.6" value="10" />
           <entry key="project.open.time.7" value="4" />
           <entry key="project.open.time.8" value="2" />
           <entry key="project.open.time.9" value="3" />
-          <entry key="project.opened" value="30" />
+          <entry key="project.opened" value="31" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -49,14 +48,14 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="5563" />
-          <entry key="txt" value="166" />
+          <entry key="java" value="6003" />
+          <entry key="txt" value="205" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="5563" />
-          <entry key="PLAIN_TEXT" value="166" />
+          <entry key="JAVA" value="6003" />
+          <entry key="PLAIN_TEXT" value="205" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -67,8 +66,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ThomasShootEmUpController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="203" column="9" lean-forward="true" selection-start-line="203" selection-start-column="9" selection-end-line="203" selection-end-column="9" />
+            <state relative-caret-position="800">
+              <caret line="183" selection-start-line="183" selection-end-line="183" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2797#2798#0" expanded="true" />
@@ -81,7 +80,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Track.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
+            <state relative-caret-position="240">
               <caret line="19" column="27" selection-start-line="19" selection-start-column="27" selection-end-line="19" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -93,8 +92,18 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Thomas.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="720">
-              <caret line="53" column="58" lean-forward="true" selection-start-line="53" selection-start-column="58" selection-end-line="53" selection-end-column="58" />
+            <state relative-caret-position="225">
+              <caret line="22" column="37" lean-forward="true" selection-start-line="22" selection-start-column="37" selection-end-line="22" selection-end-column="37" />
+              <folding>
+                <element signature="e#3391#3392#0" expanded="true" />
+                <element signature="e#3443#3444#0" expanded="true" />
+                <element signature="e#3517#3518#0" expanded="true" />
+                <element signature="e#3569#3570#0" expanded="true" />
+                <element signature="e#3939#3940#0" expanded="true" />
+                <element signature="e#3979#3980#0" expanded="true" />
+                <element signature="e#4271#4272#0" expanded="true" />
+                <element signature="e#4312#4313#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -142,10 +151,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="627" />
-    <option name="y" value="72" />
-    <option name="width" value="1579" />
-    <option name="height" value="1364" />
+    <option name="x" value="131" />
+    <option name="y" value="45" />
+    <option name="width" value="1993" />
+    <option name="height" value="1173" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -161,7 +170,7 @@
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="SearchEverywhereHistoryKey" value="drawTh&#9;PSI&#9;JAVA://ThomasShootEmUpController#drawThomas&#10;thomasTr&#9;PSI&#9;JAVA://ThomasShootEmUpController#thomasTransform&#10;drawThomas&#9;PSI&#9;JAVA://ThomasShootEmUpController#drawThomas" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1541032011440" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1541108185591" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="options.lastSelected" value="project.propVCSSupport.Mappings" />
     <property name="options.searchVisible" value="true" />
@@ -290,11 +299,18 @@
       <option name="project" value="LOCAL" />
       <updated>1541031768582</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Thomas jumping OK...collisions next...">
+      <created>1541106603670</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1541106603671</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="627" y="72" width="1579" height="1364" extended-state="0" />
+    <frame x="131" y="45" width="1993" height="1173" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.33995235" />
@@ -304,7 +320,7 @@
       <window_info id="UI Designer" order="4" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
-      <window_info anchor="bottom" id="Run" order="0" weight="0.11128903" />
+      <window_info anchor="bottom" id="Run" order="0" weight="0.13137996" />
       <window_info anchor="bottom" id="TODO" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.3282626" />
       <window_info anchor="bottom" id="Debug" order="3" />
@@ -352,7 +368,9 @@
     <MESSAGE value="Moving things to separate classes" />
     <MESSAGE value="Track, Thomas bounding boxes OK." />
     <MESSAGE value="Tracks draw OK...bounding box OK." />
-    <option name="LAST_COMMIT_MESSAGE" value="Tracks draw OK...bounding box OK." />
+    <MESSAGE value="Thomas jumping OK...collisions next..." />
+    <option name="LAST_COMMIT_MESSAGE" value="Thomas jumping OK...collisions next..." />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/pic0.PNG" />
@@ -372,16 +390,9 @@
     <entry file="file://$PROJECT_DIR$/src/ground.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Road.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="11" column="10" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Track.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
+        <state relative-caret-position="240">
           <caret line="19" column="27" selection-start-line="19" selection-start-column="27" selection-end-line="19" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -389,10 +400,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ThomasShootEmUpController.java">
+    <entry file="file://$PROJECT_DIR$/src/Road.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
-          <caret line="203" column="9" lean-forward="true" selection-start-line="203" selection-start-column="9" selection-end-line="203" selection-end-column="9" />
+          <caret line="11" column="10" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ThomasShootEmUpController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="800">
+          <caret line="183" selection-start-line="183" selection-end-line="183" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2797#2798#0" expanded="true" />
@@ -403,8 +421,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Thomas.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="53" column="58" lean-forward="true" selection-start-line="53" selection-start-column="58" selection-end-line="53" selection-end-column="58" />
+        <state relative-caret-position="225">
+          <caret line="22" column="37" lean-forward="true" selection-start-line="22" selection-start-column="37" selection-end-line="22" selection-end-column="37" />
+          <folding>
+            <element signature="e#3391#3392#0" expanded="true" />
+            <element signature="e#3443#3444#0" expanded="true" />
+            <element signature="e#3517#3518#0" expanded="true" />
+            <element signature="e#3569#3570#0" expanded="true" />
+            <element signature="e#3939#3940#0" expanded="true" />
+            <element signature="e#3979#3980#0" expanded="true" />
+            <element signature="e#4271#4272#0" expanded="true" />
+            <element signature="e#4312#4313#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
