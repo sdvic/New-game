@@ -1,6 +1,4 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
@@ -13,18 +11,13 @@ public class Thomas
     private int thomasBoundingBoxHeight;
     private Image[] forwardThomasSpriteImageArray = new Image[8];
     private Image[] reverseThomasSpriteImageArray = new Image[8];
-    private AffineTransform thomasTransform = new AffineTransform();
-    private int thomasMaxSpeed = 13;
-    private Graphics2D g2;
-    private int thomasXpos;
-    private int thomasYpos;
     private int thomasSpriteImageCounter;
     private Rectangle2D.Double thomasBoundingBox;
-    private Point thomasHomePosition;
-    private boolean isJumping = false;
+    private Point thomasPosition;
+    private Shape thomasShape;
 
 
-    public Thomas(Point thomasHomePosition)
+    public Thomas(Point thomasPosition)
     {
         try
         {
@@ -46,8 +39,9 @@ public class Thomas
             reverseThomasSpriteImageArray[7] = read(getClass().getResource("Reversed Thomas8.png"));
             thomasBoundingBoxWidth = forwardThomasSpriteImageArray[0].getWidth(null);
             thomasBoundingBoxHeight = forwardThomasSpriteImageArray[0].getHeight(null);
-            this.thomasHomePosition = thomasHomePosition;
-            thomasBoundingBox = new Rectangle2D.Double(thomasHomePosition.x, thomasHomePosition.y, thomasBoundingBoxWidth, thomasBoundingBoxHeight);
+            this.thomasPosition = thomasPosition;
+            thomasBoundingBox = new Rectangle2D.Double(thomasPosition.x, thomasPosition.y, thomasBoundingBoxWidth, thomasBoundingBoxHeight);
+            thomasShape = thomasBoundingBox.getBounds();
         } catch (IOException e)
         {
             e.printStackTrace();
@@ -84,17 +78,24 @@ public class Thomas
         return thomasBoundingBox;
     }
 
-    public void setThomasHomePosition(Point thomasHomePosition)
+    public void setThomasPosition(Point thomasPosition)
     {
-        this.thomasHomePosition = thomasHomePosition;
-        thomasBoundingBox.x = thomasHomePosition.x;
-        thomasBoundingBox.y = thomasHomePosition.y;
+        this.thomasPosition = thomasPosition;
+        thomasBoundingBox.x = thomasPosition.x;
+        thomasBoundingBox.y = thomasPosition.y;
+        thomasShape.getBounds().x = thomasPosition.x;
+        thomasShape.getBounds().y = thomasPosition.y;
     }
 
 
-    public Point getThomasHomePosition()
+    public Point getThomasPosition()
     {
-        return thomasHomePosition;
+        return thomasPosition;
+    }
+
+    public Shape getThomasShape()
+    {
+        return thomasShape;
     }
 }
 

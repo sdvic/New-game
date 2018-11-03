@@ -1,18 +1,34 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
+import java.io.IOException;
 
 public class Track
 {
     private Image trackSectionImage;
     private Rectangle2D.Double trackBoundingBox;
-    private int numberOfTractSecions;
-
+    private int numberOfTrackSections;
+    private Point trackPosition;
+    private int trackSectionWidth;
+    private int trackSectionHeight;
+    private Shape trackShape;
 
     public Track(Point trackPosition, int numberOfTrackSections)
     {
-        trackSectionImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("Tracks.png"));
+        try
+        {
+            trackSectionImage = ImageIO.read(new File("/Users/VicMini/git/New-game/src/Tracks.png"));
+        } catch (IOException e)
+        {
+            System.out.println("Can't find Tracks.png");
+        }
         trackBoundingBox = new Rectangle2D.Double(trackPosition.x, trackPosition.y, trackSectionImage.getWidth(null) * numberOfTrackSections, trackSectionImage.getHeight(null));
-        this.numberOfTractSecions = numberOfTrackSections;
+        trackShape = new Rectangle2D.Double(trackPosition.x, trackPosition.y, trackSectionImage.getWidth(null) * numberOfTrackSections, trackSectionImage.getHeight(null));
+        this.numberOfTrackSections = numberOfTrackSections;
+        this.trackPosition = trackPosition;
+        trackSectionWidth = trackSectionImage.getWidth(null);
+        trackSectionHeight = trackSectionImage.getHeight(null);
     }
 
     public Image getTrackSectionImage()
@@ -25,8 +41,28 @@ public class Track
         return trackBoundingBox;
     }
 
-    public int getNumberOfTractSecionss()
+    public int getNumberOfTracKSections()
     {
-        return numberOfTractSecions;
+        return numberOfTrackSections;
+    }
+
+    public int getTrackSectionHeight()
+    {
+        return trackSectionHeight;
+    }
+
+    public int getTrackSectionWidth()
+    {
+        return trackSectionWidth;
+    }
+
+    public Point getTrackPosition()
+    {
+        return trackPosition;
+    }
+
+    public Shape getTrackShape()
+    {
+        return trackShape;
     }
 }

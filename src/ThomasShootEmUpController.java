@@ -10,25 +10,22 @@ import java.awt.geom.Rectangle2D;
 import java.net.URL;
 
 /***********************************************************************************************
- * David Frieder's Thomas Game Copyright 2018 David Frieder 10/16/2018 rev 3.7
- * Thomas Jumping vic 11/1/2018
+ * David Frieder's Thomas Game Copyright 2018 David Frieder 10/16/2018 rev 3.8
+ * Thomas Jumping vic 11/2/2018
  ***********************************************************************************************/
 public class ThomasShootEmUpController extends JComponent implements ActionListener, Runnable, KeyListener
 {
     Graphics g = null;
     private int widthOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
     private int heightOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
-    private Point upperTrackPosition = new Point(0, 500 * heightOfScreen / 1000);
-    private Point mainTrackPosition = new Point(0, 842 * heightOfScreen / 1000);
-    private Point thomasHomePosition = new Point(widthOfScreen / 3, 705 * heightOfScreen / 1000);
-    private int thomasDeltaY;
-    private Thomas thomas = new Thomas(thomasHomePosition);
+    private Point thomasPosition = new Point(widthOfScreen / 3, 705 * heightOfScreen / 1000);
+    private Point upperTrackPosition = new Point(0, 842 * heightOfScreen / 1000);
+    private Point mainTrackPosition = new Point(0, 500 * heightOfScreen / 1000);
+    private Thomas thomas = new Thomas(thomasPosition);
     private Track upperTrack = new Track(upperTrackPosition, 1);
-    private Track mainTrack = new Track(mainTrackPosition, 5);
+    private Track mainTrack = new Track(mainTrackPosition, 3);
     private Road road = new Road();
     private boolean isGoingRight;
-    private Shape upperTrackShape;
-    private Shape thomasBoundingBoxShape;
     private JFrame mainGameWindow = new JFrame("NewGame");// Makes window with
     private AffineTransform identityTx = new AffineTransform();
     private AffineTransform backgroundTx = new AffineTransform();
@@ -36,16 +33,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
     private Timer jumpingTicker = new Timer(800 / 60, this);
     private boolean isGoingLeft;
     private boolean isJumping;
-    private boolean isFalling;
-    private int initialJumpingVelocity = -31;
-    private int jumpingVelocity = initialJumpingVelocity;
-    private int initialFallingVelocity = 0;
-    private int fallingVelocity = initialFallingVelocity;
-    private int movingVelocity;
-    private int gravityAcceleration = 1;
     private Graphics2D g2;
-    private int thomasYOffsetFromGround = 0;
-    private boolean lastWayFacing = true;
     private URL thomasThemeAddress = getClass().getResource("ThomasThemeSong.wav");
     private AudioClip thomasThemeSong = JApplet.newAudioClip(thomasThemeAddress);
 
@@ -64,7 +52,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
     public void run()
     {
         setUpMainGameWindow();
-        thomas.setThomasHomePosition(thomasHomePosition);
+        thomas.setThomasPosition(thomasPosition);
         repaint();
 //        thomasThemeSong.loop();
         animationTicker.start();
@@ -95,8 +83,8 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
         drawThomas();
         drawRoad();
         drawObstacle();
-        drawTracks(0, 842 * heightOfScreen / 1000, 6);//Lower track
-        drawTracks(0, 500 * heightOfScreen / 1000, 2);//Upper track
+        drawTracks(mainTrack);
+        drawTracks(upperTrack);
 //        if (testIntersection(thomasBoundingBoxShape, upperTrackShape))
 //        {
 //            if (jumpingVelocity > 0 && thomasYOffsetFromGround < trackYPos)
@@ -143,19 +131,16 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
     /***********************************************************************************************
      * Draw tracks
      ***********************************************************************************************/
-    private void drawTracks(int trackXPos, int trackYPos, int trackSections)
+    private void drawTracks(Track track)
     {
         g2.setTransform(backgroundTx);
-        Image trackSectionImage = upperTrack.getTrackSectionImage();
-        int trackSectionWidth = trackSectionImage.getWidth(null);
-        int trackSectionHeight = trackSectionImage.getHeight(null);
-        Rectangle2D.Double trackBoundingBox = new Rectangle2D.Double(trackXPos, trackYPos, trackSectionWidth * trackSections, trackSectionHeight);
-        for (int i = 0; i < trackSections; i++)
+        Rectangle2D.Double trackBoundingBox = new Rectangle2D.Double(track.getTrackPosition().x, track.getTrackPosition().y, track.getTrackSectionWidth() * track.getNumberOfTracKSections(), track.getTrackSectionHeight());
+        for (int i = 0; i < track.getNumberOfTracKSections(); i++)
         {
-            g2.drawImage(trackSectionImage, i * trackSectionWidth, trackYPos, null);
+            g2.drawImage(track.getTrackSectionImage(), i * track.getTrackSectionWidth(), track.getTrackPosition().y, null);
         }
         g2.setColor(Color.GREEN);
-        g2.draw(trackBoundingBox);
+        g2.draw(track.getTrackShape());
     }
 
     /***********************************************************************************************
@@ -166,10 +151,8 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
         g2.setTransform(identityTx);
         try
         {
-            Rectangle2D.Double thomasBoundingBox = thomas.getThomasBoundingBox();
-            thomasBoundingBoxShape = thomasBoundingBox.getBounds();
             g2.setColor(Color.GREEN);
-            g2.draw(thomasBoundingBoxShape);
+            g2.draw(thomas.getThomasShape());
             Image thomasSpriteImage = thomas.getForwardThomasSpriteImageArray()[0];
             if (isGoingLeft)// Thomas going left
             {
@@ -182,47 +165,10 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
             if (!isGoingRight && !isGoingLeft) //Shows an image of Thomas when not moving
             {
             }
-            g2.drawImage(thomasSpriteImage, thomas.getThomasHomePosition().x, thomas.getThomasHomePosition().y, null);
+            g2.drawImage(thomasSpriteImage, thomas.getThomasPosition().x, thomas.getThomasPosition().y, null);
         } catch (Exception ex)
         {
             System.out.println("error reading thomas thomasSpriteImage from thomas sprite thomasSpriteImage array");
-        }
-    }
-
-    /***********************************************************************************************
-     * Thomas Jumper
-     ***********************************************************************************************/
-    public void jump(ActionEvent e)
-    {
-        if (e.getSource() == jumpingTicker)
-        {
-            thomasYOffsetFromGround += jumpingVelocity;
-            jumpingVelocity += gravityAcceleration;
-            repaint();
-        }
-    }
-
-    /***********************************************************************************************
-     * Thomas Falling
-     ***********************************************************************************************/
-    public void fall(ActionEvent e)
-    {
-        if (e.getSource() == jumpingTicker && !isJumping)
-        {
-            if (g2 != null)
-            {
-                thomasYOffsetFromGround += fallingVelocity;
-                fallingVelocity += gravityAcceleration;
-            }
-            if ((thomasYOffsetFromGround > 0 || testIntersection(thomasBoundingBoxShape, upperTrackShape)))
-            {
-                fallingVelocity = initialFallingVelocity;
-                thomasYOffsetFromGround = 0;
-                isFalling = false;
-                isJumping = false;
-            }
-            isFalling = false;
-            repaint();
         }
     }
 
@@ -305,11 +251,11 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
         }
         if (isJumping)
         {
-            thomas.setThomasHomePosition(new Point(thomas.getThomasHomePosition().x, thomas.getThomasHomePosition().y - 20));
+            thomas.setThomasPosition(new Point(thomas.getThomasPosition().x, thomas.getThomasPosition().y - 20));
         }
-        if (!isJumping && thomas.getThomasHomePosition().y < (heightOfScreen - 480))
+        if (!isJumping && thomas.getThomasPosition().y < (heightOfScreen - 480))
         {
-            thomas.setThomasHomePosition(new Point(thomas.getThomasHomePosition().x, thomas.getThomasHomePosition().y + 20));
+            thomas.setThomasPosition(new Point(thomas.getThomasPosition().x, thomas.getThomasPosition().y + 20));
         }
         repaint();
     }
