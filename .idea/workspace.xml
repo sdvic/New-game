@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bee6b247-4e15-4c90-aac2-f0ace281037e" name="Default Changelist" comment="Rev 3.8 Working on Shapes...">
+    <list default="true" id="bee6b247-4e15-4c90-aac2-f0ace281037e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Road.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Road.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Thomas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Thomas.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ThomasShootEmUpController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ThomasShootEmUpController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Track.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Track.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/bin/" />
@@ -34,10 +30,10 @@
           <entry key="project.open.time.38" value="1" />
           <entry key="project.open.time.5" value="2" />
           <entry key="project.open.time.6" value="14" />
-          <entry key="project.open.time.7" value="16" />
+          <entry key="project.open.time.7" value="17" />
           <entry key="project.open.time.8" value="4" />
           <entry key="project.open.time.9" value="5" />
-          <entry key="project.opened" value="52" />
+          <entry key="project.opened" value="53" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -56,13 +52,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="java" value="10107" />
-          <entry key="txt" value="303" />
+          <entry key="txt" value="348" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JAVA" value="10107" />
-          <entry key="PLAIN_TEXT" value="303" />
+          <entry key="PLAIN_TEXT" value="348" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -74,7 +70,7 @@
         <entry file="file://$PROJECT_DIR$/src/Track.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="255">
-              <caret line="17" column="55" lean-forward="true" selection-start-line="17" selection-start-column="55" selection-end-line="17" selection-end-column="87" />
+              <caret line="17" column="55" selection-start-line="17" selection-start-column="55" selection-end-line="17" selection-end-column="87" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -97,7 +93,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Road.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
+            <state relative-caret-position="120">
               <caret line="11" selection-start-line="11" selection-end-line="11" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -109,8 +105,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ThomasShootEmUpController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="31" column="32" lean-forward="true" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
+            <state relative-caret-position="330">
+              <caret line="31" column="32" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -336,14 +332,20 @@
       <option name="project" value="LOCAL" />
       <updated>1542048430105</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Rev 4.0  David has copy...intersect working">
+      <created>1542326679490</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1542326679490</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1910" y="521" width="1274" height="1500" extended-state="0" />
-    <editor active="true" />
+    <frame x="1560" y="23" width="1000" height="1500" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.34273234" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.34237996" />
       <window_info id="Structure" order="1" side_tool="true" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -405,7 +407,8 @@
     <MESSAGE value="ver 3.7" />
     <MESSAGE value="Rev 3.8 Working on Shapes..." />
     <MESSAGE value="rev 3.9 Feeling better about cleanup" />
-    <option name="LAST_COMMIT_MESSAGE" value="rev 3.9 Feeling better about cleanup" />
+    <MESSAGE value="Rev 4.0  David has copy...intersect working" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rev 4.0  David has copy...intersect working" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="editorHistoryManager">
@@ -426,10 +429,10 @@
     <entry file="file://$PROJECT_DIR$/src/ground.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ThomasShootEmUpController.java">
+    <entry file="file://$PROJECT_DIR$/src/Track.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="31" column="32" lean-forward="true" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
+        <state relative-caret-position="255">
+          <caret line="17" column="55" selection-start-line="17" selection-start-column="55" selection-end-line="17" selection-end-column="87" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -448,7 +451,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Road.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
+        <state relative-caret-position="120">
           <caret line="11" selection-start-line="11" selection-end-line="11" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -456,10 +459,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Track.java">
+    <entry file="file://$PROJECT_DIR$/src/ThomasShootEmUpController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="55" lean-forward="true" selection-start-line="17" selection-start-column="55" selection-end-line="17" selection-end-column="87" />
+        <state relative-caret-position="330">
+          <caret line="31" column="32" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
