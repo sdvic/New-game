@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
@@ -7,18 +6,19 @@ import static javax.imageio.ImageIO.read;
 
 public class Thomas
 {
-    private int thomasBoundingBoxWidth;
-    private int thomasBoundingBoxHeight;
+
     private Image[] forwardThomasSpriteImageArray = new Image[8];
     private Image[] reverseThomasSpriteImageArray = new Image[8];
     private int thomasSpriteImageCounter;
     private Rectangle2D.Double thomasBoundingBox;
     private Point thomasPosition;
-    private Shape thomasShape;
+    private Shape thomasBoundingBoxShape;
 
 
     public Thomas(Point thomasPosition)
     {
+        int thomasBoundingBoxWidth;
+        int thomasBoundingBoxHeight;
         try
         {
             forwardThomasSpriteImageArray[0] = read(getClass().getResource("Thomas1.png"));
@@ -41,7 +41,8 @@ public class Thomas
             thomasBoundingBoxHeight = forwardThomasSpriteImageArray[0].getHeight(null);
             this.thomasPosition = thomasPosition;
             thomasBoundingBox = new Rectangle2D.Double(thomasPosition.x, thomasPosition.y, thomasBoundingBoxWidth, thomasBoundingBoxHeight);
-            thomasShape = thomasBoundingBox.getBounds();
+            // thomasBoundingBoxShape = thomasBoundingBox.getBounds();
+
         } catch (IOException e)
         {
             e.printStackTrace();
@@ -63,39 +64,36 @@ public class Thomas
         }
     }
 
-    public Image[] getReverseThomasSpriteImageArray()
-    {
-        return reverseThomasSpriteImageArray;
-    }
-
     public Image[] getForwardThomasSpriteImageArray()
     {
         return forwardThomasSpriteImageArray;
     }
 
-    public Rectangle2D.Double getThomasBoundingBox()
-    {
-        return thomasBoundingBox;
-    }
 
     public void setThomasPosition(Point thomasPosition)
     {
         this.thomasPosition = thomasPosition;
-        thomasBoundingBox.x = thomasPosition.x;
-        thomasBoundingBox.y = thomasPosition.y;
-        thomasShape.getBounds().x = thomasPosition.x;
-        thomasShape.getBounds().y = thomasPosition.y;
     }
-
 
     public Point getThomasPosition()
     {
         return thomasPosition;
     }
 
-    public Shape getThomasShape()
+//    public Shape getThomasBoundingBoxShape()
+//    {
+//        return thomasBoundingBoxShape;
+//    }
+
+    public Rectangle2D.Double getThomasBoundingBox()
     {
-        return thomasShape;
+        return thomasBoundingBox;
+    }
+
+    public void setThomasBoundingBox(Rectangle2D.Double thomasBoundingBox)
+    {
+        this.thomasBoundingBox = thomasBoundingBox;
+        thomasBoundingBoxShape = thomasBoundingBox.getBounds();
     }
 }
 

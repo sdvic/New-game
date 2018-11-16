@@ -1,4 +1,7 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 public class Road
 {
@@ -6,7 +9,13 @@ public class Road
 
     public Road()
     {
-        roadImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("ground.png"));
+        try
+        {
+            roadImage = ImageIO.read(new File("/Users/VicMini/git/New-game/src/ground.png"));
+        } catch (IOException e)
+        {
+            System.out.println("Can't find ground.png");
+        }
     }
 
     public Image getRoadImage()
